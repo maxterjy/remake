@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/activity_main"
+    tools:context=".ActivityAddWork"
     android:orientation="vertical"
-    tools:context=".ActivityMain">
+    android:id="@+id/activity_add_work">
 </LinearLayout>

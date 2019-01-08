@@ -1,15 +1,15 @@
 package invistd.mastercheck;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentMain extends Fragment {
+
+    public static final int REQUEST_ADD_WORK = 100;
+    public static final int REQUEST_EDIT_WORK = 101;
 
     RecyclerView mRcvWork;
     AdapterWork mAdapterWork;
@@ -50,7 +53,7 @@ public class FragmentMain extends Fragment {
         listWork.add("Project Coding");
 
 
-        mAdapterWork = new AdapterWork(listWork);
+        mAdapterWork = new AdapterWork(listWork, getActivity());
         mRcvWork.setAdapter(mAdapterWork);
 
         mlayoutCoordinator = view.findViewById(R.id.layout_coordinator);
@@ -58,8 +61,8 @@ public class FragmentMain extends Fragment {
         mfabAddWork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar snackbar = Snackbar.make(mlayoutCoordinator, "add", Snackbar.LENGTH_LONG);
-                snackbar.show();
+                Intent intent = new Intent(getContext(), ActivityAddWork.class);
+                startActivityForResult(intent, REQUEST_ADD_WORK);
             }
         });
 
@@ -70,4 +73,26 @@ public class FragmentMain extends Fragment {
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String workTitle = "";
+
+        if (data != null)
+            workTitle = data.getStringExtra("work_title");
+
+        String log = "request: " + requestCode + " result: " + resultCode + " data:" + workTitle;
+        
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_ADD_WORK:
+                    mAdapterWork.addItem(workTitle);
+                    break;
+
+
+                case REQUEST_EDIT_WORK:
+                    mAdapterWork.addItem(workTitle);
+                    break;
+            }
+        }
+    }
 }

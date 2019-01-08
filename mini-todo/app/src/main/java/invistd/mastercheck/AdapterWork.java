@@ -1,34 +1,23 @@
 package invistd.mastercheck;
 
+
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class AdapterWork extends RecyclerView.Adapter<AdapterWork.ViewHolderWork> {
+public class AdapterWork extends RecyclerView.Adapter<ViewHolderWork> {
     int colors[] = {0xff9ff4e9, 0xff97f285, 0xfff3f99d, 0xffffb7e7,  0xff9ba3ff, 0xffff7a7a};
     List<String> mListWork;
+    Activity mActivity;
 
-    public class ViewHolderWork extends  RecyclerView.ViewHolder {
-        View mLayout;
-        TextView mTxtName;
-
-        public ViewHolderWork(View view) {
-            super(view);
-            mLayout = view;
-            mTxtName = view.findViewById(R.id.textview_work_name);
-        }
-    }
-
-    public AdapterWork(List<String> listWork) {
+    public AdapterWork(List<String> listWork, Activity activity) {
         mListWork = listWork;
+        mActivity = activity;
     }
 
     @NonNull
@@ -37,7 +26,7 @@ public class AdapterWork extends RecyclerView.Adapter<AdapterWork.ViewHolderWork
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(R.layout.layout_row_work, viewGroup, false);
 
-        ViewHolderWork holder = new ViewHolderWork(view);
+        ViewHolderWork holder = new ViewHolderWork(view, mActivity);
 
         return holder;
     }
@@ -48,7 +37,7 @@ public class AdapterWork extends RecyclerView.Adapter<AdapterWork.ViewHolderWork
         holder.mTxtName.setText(name);
 
         int color = colors[i % colors.length];
-        holder.mLayout.setBackgroundColor(color);
+        holder.mView.setBackgroundColor(color);
     }
 
     @Override
@@ -63,5 +52,10 @@ public class AdapterWork extends RecyclerView.Adapter<AdapterWork.ViewHolderWork
 
     public void moveItem(int from, int to) {
         notifyItemMoved(from, to);
+    }
+
+    public void addItem(String item) {
+        mListWork.add(item);
+        notifyDataSetChanged();
     }
 }
