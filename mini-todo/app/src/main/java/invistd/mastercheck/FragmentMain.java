@@ -13,6 +13,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class FragmentMain extends Fragment {
         listWork.add("Project Coding");
 
 
-        mAdapterWork = new AdapterWork(listWork, getActivity());
+        mAdapterWork = new AdapterWork(listWork, this);
         mRcvWork.setAdapter(mAdapterWork);
 
         mlayoutCoordinator = view.findViewById(R.id.layout_coordinator);
@@ -81,16 +82,17 @@ public class FragmentMain extends Fragment {
             workTitle = data.getStringExtra("work_title");
 
         String log = "request: " + requestCode + " result: " + resultCode + " data:" + workTitle;
-        
+        Toast.makeText(getContext(), log, Toast.LENGTH_SHORT).show();
+
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_ADD_WORK:
                     mAdapterWork.addItem(workTitle);
                     break;
 
-
                 case REQUEST_EDIT_WORK:
-                    mAdapterWork.addItem(workTitle);
+                    int index = data.getIntExtra("work_index", -1);
+                    mAdapterWork.editItem(index, workTitle);
                     break;
             }
         }

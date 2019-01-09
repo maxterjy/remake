@@ -1,5 +1,6 @@
 package invistd.mastercheck;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,13 +14,11 @@ public class ActivityAddWork extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_work);
 
-//        String workTitle = savedInstanceState.getString("work_title", "");
-//        int workIndex = savedInstanceState.getInt("work_index", -1);
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         Fragment fragmentAddWork = new FragmentAddWork();
-        transaction.add(R.id.activity_add_work, fragmentAddWork);
+
+        transaction.add(R.id.activity_add_work, fragmentAddWork, "tag_fragment_add_work");
         transaction.commit();
     }
 }
