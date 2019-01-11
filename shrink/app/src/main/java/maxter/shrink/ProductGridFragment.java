@@ -1,6 +1,6 @@
 package maxter.shrink;
 
-
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +11,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
 
 public class ProductGridFragment extends Fragment {
 
@@ -35,6 +36,16 @@ public class ProductGridFragment extends Fragment {
         if (activity != null) {
             activity.setSupportActionBar(toolbar);
         }
+
+        View productGrid = view.findViewById(R.id.product_grid);
+        Drawable openIcon = getContext().getResources().getDrawable(R.drawable.shr_branded_menu);
+        Drawable closeIcon = getContext().getResources().getDrawable(R.drawable.shr_close_menu);
+        Interpolator interpolator = new AccelerateDecelerateInterpolator();
+
+        toolbar.setNavigationOnClickListener(
+                new NavigationIconOnClickListener(
+                        getContext(), productGrid, interpolator, openIcon, closeIcon)
+        );
 
         return view;
     }
