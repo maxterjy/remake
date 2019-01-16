@@ -72,6 +72,7 @@ public class AdapterWork extends RecyclerView.Adapter<ViewHolderWork> {
 
     public void addItem(String value) {
         mListWork.add(value);
+        notifyItemInserted(mListWork.size() - 1);
     }
 
     public void editItem(int index, String newValue) {

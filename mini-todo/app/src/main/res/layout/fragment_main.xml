@@ -11,12 +11,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
+        <LinearLayout
+            android:id="@+id/todoEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@android:drawable/btn_star"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="You don\'t have any todo"/>
+
+        </LinearLayout>
+
+        <invistd.mastercheck.RecyclerViewEmptySupport
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/recycle_view_work"
             android:scrollbars="vertical">
-        </android.support.v7.widget.RecyclerView>
+        </invistd.mastercheck.RecyclerViewEmptySupport>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_add_work"

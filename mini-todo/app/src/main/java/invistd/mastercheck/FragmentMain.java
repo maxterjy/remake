@@ -23,7 +23,7 @@ public class FragmentMain extends Fragment {
     public static final int REQUEST_ADD_WORK = 100;
     public static final int REQUEST_EDIT_WORK = 101;
 
-    RecyclerView mRcvWork;
+    RecyclerViewEmptySupport mRcvWork;
     AdapterWork mAdapterWork;
     RecyclerView.LayoutManager mLayoutManager;
 
@@ -55,6 +55,10 @@ public class FragmentMain extends Fragment {
 
 
         mAdapterWork = new AdapterWork(listWork, this);
+
+        View emptyView = view.findViewById(R.id.todoEmpty);
+        mRcvWork.setEmptyView(emptyView);
+
         mRcvWork.setAdapter(mAdapterWork);
 
         mlayoutCoordinator = view.findViewById(R.id.layout_coordinator);
