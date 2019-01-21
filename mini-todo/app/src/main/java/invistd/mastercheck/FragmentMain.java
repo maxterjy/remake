@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +25,15 @@ public class FragmentMain extends Fragment {
     public static final int REQUEST_ADD_WORK = 100;
     public static final int REQUEST_EDIT_WORK = 101;
 
+    List<String> listWork;
     RecyclerViewEmptySupport mRcvWork;
     AdapterWork mAdapterWork;
     RecyclerView.LayoutManager mLayoutManager;
 
     FloatingActionButton mfabAddWork;
     CoordinatorLayout mlayoutCoordinator;
+
+    StoreRetrieveData mStoreRetrieveData;
 
     public FragmentMain() {
     }
@@ -45,13 +50,16 @@ public class FragmentMain extends Fragment {
 
         mRcvWork.setLayoutManager(mLayoutManager);
 
-        List<String> listWork = new ArrayList<String>();
-        listWork.add("Get Up");
-        listWork.add("Run");
-        listWork.add("English Speaking");
-        listWork.add("Breakfast");
-        listWork.add("Algorithm Practice");
-        listWork.add("Project Coding");
+        mStoreRetrieveData = new StoreRetrieveData(getContext());
+        listWork = mStoreRetrieveData.loadFromFile();
+
+//        listWork = new ArrayList<String>();
+//        listWork.add("Get Up");
+//        listWork.add("Run");
+//        listWork.add("English Speaking");
+//        listWork.add("Breakfast");
+//        listWork.add("Algorithm Practice");
+//        listWork.add("Project Coding");
 
 
         mAdapterWork = new AdapterWork(listWork, this);
@@ -60,6 +68,7 @@ public class FragmentMain extends Fragment {
         mRcvWork.setEmptyView(emptyView);
 
         mRcvWork.setAdapter(mAdapterWork);
+        mRcvWork.setItemAnimator(new DefaultItemAnimator());
 
         mlayoutCoordinator = view.findViewById(R.id.layout_coordinator);
         mfabAddWork = view.findViewById(R.id.fab_add_work);
@@ -100,5 +109,11 @@ public class FragmentMain extends Fragment {
                     break;
             }
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mStoreRetrieveData.saveToFile((ArrayList<String>)listWork);
     }
 }

@@ -49,7 +49,6 @@ public class RecyclerViewEmptySupport extends RecyclerView {
 
     private void updateview() {
         Adapter<?> adapter = getAdapter();
-        Log.i("thachpham", "item count: " + adapter.getItemCount());
 
         if (adapter.getItemCount() == 0 && emptyView != null) {
             emptyView.setVisibility(VISIBLE);
