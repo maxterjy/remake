@@ -21,7 +21,7 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@android:drawable/btn_star"/>
+                android:src="@drawable/empty_view_bg"/>
 
             <TextView
                 android:layout_width="match_parent"
