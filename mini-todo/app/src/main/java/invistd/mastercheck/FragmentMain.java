@@ -25,7 +25,7 @@ public class FragmentMain extends Fragment {
     public static final int REQUEST_ADD_WORK = 100;
     public static final int REQUEST_EDIT_WORK = 101;
 
-    List<String> listWork;
+    List<WorkItem> listWork;
     RecyclerViewEmptySupport mRcvWork;
     AdapterWork mAdapterWork;
     RecyclerView.LayoutManager mLayoutManager;
@@ -52,15 +52,6 @@ public class FragmentMain extends Fragment {
 
         mStoreRetrieveData = new StoreRetrieveData(getContext());
         listWork = mStoreRetrieveData.loadFromFile();
-
-//        listWork = new ArrayList<String>();
-//        listWork.add("Get Up");
-//        listWork.add("Run");
-//        listWork.add("English Speaking");
-//        listWork.add("Breakfast");
-//        listWork.add("Algorithm Practice");
-//        listWork.add("Project Coding");
-
 
         mAdapterWork = new AdapterWork(listWork, this);
 
@@ -89,20 +80,20 @@ public class FragmentMain extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String workTitle = "";
+        WorkItem item = null;
 
-        if (data != null)
-            workTitle = data.getStringExtra("work_title");
-
+        if (data != null) {
+            item = (WorkItem)data.getSerializableExtra("work_item");
+        }
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_ADD_WORK:
-                    mAdapterWork.addItem(workTitle);
+                    mAdapterWork.addItem(item);
                     break;
 
                 case REQUEST_EDIT_WORK:
                     int index = data.getIntExtra("work_index", -1);
-                    mAdapterWork.editItem(index, workTitle);
+                    mAdapterWork.editItem(index, item);
                     break;
             }
         }
@@ -111,6 +102,6 @@ public class FragmentMain extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        mStoreRetrieveData.saveToFile((ArrayList<String>)listWork);
+        mStoreRetrieveData.saveToFile((ArrayList<WorkItem>)listWork);
     }
 }

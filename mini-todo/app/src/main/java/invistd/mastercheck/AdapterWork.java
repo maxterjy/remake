@@ -15,10 +15,10 @@ import java.util.List;
 
 public class AdapterWork extends RecyclerView.Adapter<ViewHolderWork> {
     int colors[] = {0xff9ff4e9, 0xff97f285, 0xfff3f99d, 0xffffb7e7,  0xff9ba3ff, 0xffff7a7a};
-    List<String> mListWork;
+    List<WorkItem> mListWork;
     Fragment mFragment;
 
-    public AdapterWork(List<String> listWork, Fragment fragment) {
+    public AdapterWork(List<WorkItem> listWork, Fragment fragment) {
         mListWork = listWork;
         mFragment = fragment;
     }
@@ -35,7 +35,8 @@ public class AdapterWork extends RecyclerView.Adapter<ViewHolderWork> {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolderWork holder, final int i) {
-        String name = mListWork.get(i);
+        WorkItem item = mListWork.get(i);
+        String name = item.mTitle;
         holder.mTxtName.setText(name);
 
         int color = colors[i % colors.length];
@@ -45,11 +46,13 @@ public class AdapterWork extends RecyclerView.Adapter<ViewHolderWork> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(holder.mView.getContext(), ActivityAddWork.class);
-                int index = i;
-                String title = mListWork.get(index);
+                WorkItem item = mListWork.get(i);
 
-                intent.putExtra("work_index", index);
-                intent.putExtra("work_title", title);
+
+                String title = item.mTitle;
+
+                intent.putExtra("work_index", i);
+                intent.putExtra("work_item", item);
 
                 mFragment.startActivityForResult(intent, FragmentMain.REQUEST_EDIT_WORK);
             }
@@ -70,13 +73,13 @@ public class AdapterWork extends RecyclerView.Adapter<ViewHolderWork> {
         notifyItemMoved(from, to);
     }
 
-    public void addItem(String value) {
-        mListWork.add(value);
+    public void addItem(WorkItem item) {
+        mListWork.add(item);
         notifyItemInserted(mListWork.size() - 1);
     }
 
-    public void editItem(int index, String newValue) {
-        mListWork.set(index, newValue);
+    public void editItem(int index, WorkItem item) {
+        mListWork.set(index, item);
         notifyItemChanged(index);
     }
 }

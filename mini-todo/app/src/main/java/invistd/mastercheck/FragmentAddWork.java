@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import java.util.Date;
+
 
 public class FragmentAddWork extends Fragment {
 
@@ -26,7 +28,13 @@ public class FragmentAddWork extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_work, container, false);
 
         Intent intent = getActivity().getIntent();
-        String workTitle = intent.getStringExtra("work_title");
+        WorkItem item = (WorkItem) intent.getSerializableExtra("work_item");
+        String workTitle = "";
+
+        if (item != null) {
+            workTitle = item.mTitle;
+        }
+
         final int workIndex = intent.getIntExtra("work_index", -1);
 
         mEdtWorkTitle = view.findViewById(R.id.edt_work_title);
@@ -37,8 +45,11 @@ public class FragmentAddWork extends Fragment {
          @Override
          public void onClick(View v) {
              String workTitle = mEdtWorkTitle.getText().toString();
+             WorkItem item = new WorkItem(workTitle, "temp description", new Date());
+
              Intent intent = new Intent();
-             intent.putExtra("work_title", workTitle);
+
+             intent.putExtra("work_item", item);
              intent.putExtra("work_index", workIndex);
 
              getActivity().setResult(Activity.RESULT_OK, intent);

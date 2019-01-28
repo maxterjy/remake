@@ -12,6 +12,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.Buffer;
 import java.util.ArrayList;
@@ -23,40 +25,38 @@ public class StoreRetrieveData {
         mContext = context;
     }
 
-    public void saveToFile(ArrayList<String> items) {
+    public void saveToFile(ArrayList<WorkItem> items) {
         try {
-            FileWriter fileWriter = new FileWriter("/sdcard/Android/test.txt");
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            FileOutputStream fos = new FileOutputStream("/sdcard/Android/test.txt");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
 
             int size = items.size();
             for(int i = 0; i < size; i++) {
-                bufferedWriter.write(items.get(i));
-                bufferedWriter.newLine();
+                oos.writeObject(items.get(i));
             }
 
-            bufferedWriter.close();
-            fileWriter.close();
+            oos.close();
+            fos.close();
         }
         catch (Exception ex) {
             Log.e("thachpham", "saveToFile failed: " + ex.toString());
         }
     }
 
-    public ArrayList<String> loadFromFile() {
-        ArrayList<String> workList = new ArrayList<>();
+    public ArrayList<WorkItem> loadFromFile() {
+        ArrayList<WorkItem> workList = new ArrayList<>();
 
        try {
-           FileReader fileReader = new FileReader("/sdcard/Android/test.txt");
-           BufferedReader bufferedReader = new BufferedReader(fileReader);
+           FileInputStream fis = new FileInputStream("/sdcard/Android/test.txt");
+           ObjectInputStream ois = new ObjectInputStream(fis);
 
-           String str = null;
-           while ((str = bufferedReader.readLine()) != null) {
-               Log.i("thachpham", str);
-               workList.add(str);
+           WorkItem item = null;
+           while ((item = (WorkItem)ois.readObject()) != null) {
+               workList.add(item);
            }
 
-           bufferedReader.close();
-           fileReader.close();
+           ois.close();
+           fis.close();
        }
        catch (Exception ex) {
            Log.e("thachpham", "loadFromFile failed: " + ex.toString());
