@@ -22,12 +22,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:layout_marginRight="32dp"
-                app:hintTextAppearance="?android:attr/textAppearanceMedium"
                 android:hint="Task">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edt_work_title"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </android.support.design.widget.TextInputLayout>
@@ -35,7 +33,6 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintTextAppearance="?android:attr/textAppearanceMedium"
                 android:hint="Description">
 --
                 <android.support.design.widget.TextInputEditText
@@ -67,7 +64,6 @@
                         android:gravity="center"
                         android:padding="8dp"
                         android:layout_margin="16dp"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Remind Me"/>
 
                     <android.support.v7.widget.SwitchCompat

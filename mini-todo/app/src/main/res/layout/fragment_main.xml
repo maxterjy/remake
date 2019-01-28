@@ -31,12 +31,34 @@
 
         </LinearLayout>
 
-        <invistd.mastercheck.RecyclerViewEmptySupport
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/recycle_view_work"
-            android:scrollbars="vertical">
-        </invistd.mastercheck.RecyclerViewEmptySupport>
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task"
+                android:gravity="center"
+                android:textSize="32dp"
+                android:padding="4dp"/>
+
+            <View
+                android:layout_width="128dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:background="@android:color/black" />
+
+            <invistd.mastercheck.RecyclerViewEmptySupport
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/recycle_view_work"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:scrollbars="vertical">
+            </invistd.mastercheck.RecyclerViewEmptySupport>
+        </LinearLayout>
+
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_add_work"
@@ -44,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:layout_gravity="bottom|right|end"
+            android:layout_gravity="bottom|center_horizontal"
             app:fabSize="normal" />
 
     </android.support.design.widget.CoordinatorLayout>

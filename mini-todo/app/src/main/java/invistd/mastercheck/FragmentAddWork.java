@@ -11,6 +11,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -48,6 +49,8 @@ public class FragmentAddWork extends Fragment {
 
         mEdtWorkTitle = view.findViewById(R.id.edt_work_title);
         mEdtWorkTitle.setText(workTitle);
+        mEdtWorkTitle.requestFocus();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
         mEdtWorkDescription = view.findViewById(R.id.edt_work_description);
         mEdtWorkDescription.setText(workDescription);

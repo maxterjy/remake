@@ -40,7 +40,7 @@ public class AdapterWork extends RecyclerView.Adapter<ViewHolderWork> {
         holder.mTxtName.setText(name);
 
         int color = colors[i % colors.length];
-        holder.mView.setBackgroundColor(color);
+//        holder.mView.setBackgroundColor(color);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
