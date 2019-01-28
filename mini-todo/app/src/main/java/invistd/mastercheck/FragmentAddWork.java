@@ -1,15 +1,18 @@
 package invistd.mastercheck;
 
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import java.util.Date;
 
@@ -18,6 +21,9 @@ public class FragmentAddWork extends Fragment {
 
     FloatingActionButton mFabConfirm;
     EditText mEdtWorkTitle;
+    EditText mEdtWorkDescription;
+    SwitchCompat mSwitchReminder;
+    LinearLayout mLayoutDateInfo;
 
     public FragmentAddWork() {
     }
@@ -29,10 +35,13 @@ public class FragmentAddWork extends Fragment {
 
         Intent intent = getActivity().getIntent();
         WorkItem item = (WorkItem) intent.getSerializableExtra("work_item");
+
         String workTitle = "";
+        String workDescription = "";
 
         if (item != null) {
             workTitle = item.mTitle;
+            workDescription = item.mDescription;
         }
 
         final int workIndex = intent.getIntExtra("work_index", -1);
@@ -40,12 +49,17 @@ public class FragmentAddWork extends Fragment {
         mEdtWorkTitle = view.findViewById(R.id.edt_work_title);
         mEdtWorkTitle.setText(workTitle);
 
+        mEdtWorkDescription = view.findViewById(R.id.edt_work_description);
+        mEdtWorkDescription.setText(workDescription);
+
         mFabConfirm = view.findViewById(R.id.fab_confirm);
         mFabConfirm.setOnClickListener(new View.OnClickListener(){
          @Override
          public void onClick(View v) {
-             String workTitle = mEdtWorkTitle.getText().toString();
-             WorkItem item = new WorkItem(workTitle, "temp description", new Date());
+             String title = mEdtWorkTitle.getText().toString();
+             String description = mEdtWorkDescription.getText().toString();
+
+             WorkItem item = new WorkItem(title, description, new Date());
 
              Intent intent = new Intent();
 
@@ -55,6 +69,64 @@ public class FragmentAddWork extends Fragment {
              getActivity().setResult(Activity.RESULT_OK, intent);
              getActivity().finish();
          }
+        });
+
+        mLayoutDateInfo = view.findViewById(R.id.layout_date_info);
+
+        mSwitchReminder = view.findViewById(R.id.switch_reminder);
+        mSwitchReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mSwitchReminder.isChecked()) {
+                    mLayoutDateInfo.animate().alpha(1.0f).setDuration(500).setListener(
+                            new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                    mLayoutDateInfo.setVisibility(View.VISIBLE);
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animation) {
+
+                                }
+                            });
+                }
+                else {
+                    mLayoutDateInfo.animate().alpha(0.0f).setDuration(500).setListener(
+                            new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    mLayoutDateInfo.setVisibility(View.INVISIBLE);
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animation) {
+
+                                }
+                            }
+                    );
+                }
+            }
         });
 
         return view;
