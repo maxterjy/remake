@@ -2,14 +2,14 @@
 <merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-    <!--NAVIGATION HEADER-->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <!--NAVIGATION HEADER-->
         <LinearLayout
             android:id="@+id/navigation_view_header"
             android:layout_width="match_parent"
@@ -43,6 +43,129 @@
                 android:text="Version: 0.01"
                 android:textSize="16sp"
                 android:layout_marginBottom="8dp"/>
+        </LinearLayout>
+
+        <!--NAVIGATION BODY-->
+        <LinearLayout
+            android:background="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:scrollbars="vertical">
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </remake.leafpic.view.NavigationEntry>
+
         </LinearLayout>
 
     </LinearLayout>
