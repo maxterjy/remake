@@ -4,21 +4,47 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!--NAVIGATION HEADER-->
     <LinearLayout
-        android:id="@+id/navigation_view_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/navigation_view_header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"/>
+            android:paddingStart="22dp"
+            android:paddingEnd="22dp"
+            android:paddingTop="50dp"
+            android:background="@android:color/holo_blue_dark"
+            android:orientation="vertical"
+            android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="HEADER"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_header"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LeafPic"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:layout_marginBottom="2dp"
+                android:letterSpacing="0.15"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="Version: 0.01"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 </merge>
