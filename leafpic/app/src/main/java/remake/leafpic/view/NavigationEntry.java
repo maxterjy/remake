@@ -2,14 +2,23 @@ package remake.leafpic.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import remake.leafpic.R;
 
 public class NavigationEntry extends LinearLayout {
+    ImageView mEntryIcon;
+    TextView mEntryTv;
+
     public NavigationEntry(Context context) {
         super(context);
     }
@@ -29,6 +38,18 @@ public class NavigationEntry extends LinearLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        LayoutInflater.from(context).inflate(R.layout.view_navigation_entry, this, true);
+        setOrientation(LinearLayout.HORIZONTAL);
+        setGravity(Gravity.CENTER_VERTICAL);
+
+        View view = LayoutInflater.from(context).inflate(R.layout.view_navigation_entry, this, true);
+        mEntryIcon = view.findViewById(R.id.navigation_item_icon);
+        mEntryTv = view.findViewById(R.id.navigation_item_text);
+
+        TypedArray arr = context.obtainStyledAttributes(attrs, R.styleable.leaf);
+        String entryText = arr.getString(R.styleable.leaf_entry_text);
+        mEntryTv.setText(entryText);
+
+        Drawable drawable = arr.getDrawable(R.styleable.leaf_entry_icon);
+        mEntryIcon.setImageDrawable(drawable);
     }
 }
