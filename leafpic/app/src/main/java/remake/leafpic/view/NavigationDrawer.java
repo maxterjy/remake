@@ -1,18 +1,13 @@
 package remake.leafpic.view;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-
-import java.util.ArrayList;
 
 import remake.leafpic.R;
 
@@ -22,8 +17,7 @@ public class NavigationDrawer extends ScrollView {
         void onEntrySelected(int id);
     }
 
-    ArrayList<NavigationEntry> entries = new ArrayList<>();
-    OnEntrySelectedListener onEntrySelectedListener = null;
+    OnEntrySelectedListener mOnEntrySelectedListener = null;
 
     public NavigationDrawer(Context context) {
         super(context);
@@ -57,11 +51,15 @@ public class NavigationDrawer extends ScrollView {
                 child.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                         if (onEntrySelectedListener != null)
-                             onEntrySelectedListener.onEntrySelected(v.getId());
+                         if (mOnEntrySelectedListener != null)
+                             mOnEntrySelectedListener.onEntrySelected(v.getId());
                     }
                 });
             }
         }
+    }
+
+    public void setOnEntrySelectedListener(OnEntrySelectedListener listener) {
+        this.mOnEntrySelectedListener = listener;
     }
 }

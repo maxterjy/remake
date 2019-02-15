@@ -5,8 +5,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+
 import remake.leafpic.R;
 import remake.leafpic.view.NavigationDrawer;
+import remake.leafpic.view.NavigationEntry;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +41,26 @@ public class MainActivity extends AppCompatActivity {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        NavigationDrawer.OnEntrySelectedListener onEntrySelectedListener = new NavigationDrawer.OnEntrySelectedListener() {
+            @Override
+            public void onEntrySelected(int id) {
+                onNavEntrySelected(id);
+            }
+        };
+
+        mLeftNavigationMenu.setOnEntrySelectedListener(onEntrySelectedListener);
+    }
+
+    private void onNavEntrySelected(int id) {
+        switch (id){
+            case R.id.navigation_item_albums:
+                break;
+            case R.id.navigation_item_all_media:
+                break;
+            case R.id.navigation_item_timeline:
+                break;
+        }
     }
 }
 
