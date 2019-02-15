@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<merge
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:focusable="true"
+    android:background="@drawable/nav_entry_selector">
 
     <ImageView
         android:id="@+id/navigation_item_icon"
@@ -16,8 +19,9 @@
         android:id="@+id/navigation_item_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:text="Album"
         android:textSize="16sp"
         android:paddingEnd="16dp"/>
 
-</merge>
+</LinearLayout>

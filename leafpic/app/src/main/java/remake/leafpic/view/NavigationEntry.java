@@ -9,13 +9,14 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import remake.leafpic.R;
 
-public class NavigationEntry extends LinearLayout {
+public class NavigationEntry extends FrameLayout {
     ImageView mEntryIcon;
     TextView mEntryTv;
 
@@ -38,9 +39,6 @@ public class NavigationEntry extends LinearLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        setOrientation(LinearLayout.HORIZONTAL);
-        setGravity(Gravity.CENTER_VERTICAL);
-
         View view = LayoutInflater.from(context).inflate(R.layout.view_navigation_entry, this, true);
         mEntryIcon = view.findViewById(R.id.navigation_item_icon);
         mEntryTv = view.findViewById(R.id.navigation_item_text);

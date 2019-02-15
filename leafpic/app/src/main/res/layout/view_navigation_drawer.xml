@@ -48,6 +48,7 @@
 
         <!--NAVIGATION BODY-->
         <LinearLayout
+            android:id="@+id/navigation_view_body"
             android:background="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -57,6 +58,7 @@
             android:scrollbars="vertical">
 
             <remake.leafpic.view.NavigationEntry
+                android:id="@+id/navigation_item_albums"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 leaf:entry_text="Local Folders"
@@ -64,6 +66,7 @@
             </remake.leafpic.view.NavigationEntry>
 
             <remake.leafpic.view.NavigationEntry
+                android:id="@+id/navigation_item_all_media"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 leaf:entry_text="All Media"
@@ -71,13 +74,13 @@
             </remake.leafpic.view.NavigationEntry>
 
             <remake.leafpic.view.NavigationEntry
+                android:id="@+id/navigation_item_timeline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 leaf:entry_text="Hidden Folders"
                 leaf:entry_icon="@android:drawable/ic_menu_crop">
             </remake.leafpic.view.NavigationEntry>
-
         </LinearLayout>
-    </LinearLayout>
 
+    </LinearLayout>
 </merge>
