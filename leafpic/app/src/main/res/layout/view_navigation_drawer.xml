@@ -80,6 +80,14 @@
                 leaf:entry_text="Hidden Folders"
                 leaf:entry_icon="@android:drawable/ic_menu_crop">
             </remake.leafpic.view.NavigationEntry>
+
+            <remake.leafpic.view.NavigationEntry
+                android:id="@+id/navigation_item_about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                leaf:entry_text="About"
+                leaf:entry_icon="@android:drawable/ic_menu_crop">
+            </remake.leafpic.view.NavigationEntry>
         </LinearLayout>
 
     </LinearLayout>

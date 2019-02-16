@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:leaf="http://schemas.android.com/apk/res/remake.leafpic"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.AboutActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--Application Info-->
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+
+                    <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:src="@drawable/leaf_pic" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="LeafPic"
+                        android:textSize="32sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="A colorful material gallery" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="version: 0.01"
+                        android:layout_marginBottom="16dp"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <!--Application Info End-->
+
+
+            <!--Development Info-->
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <remake.leafpic.view.AboutProjectEntry
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        leaf:entry_icon="@drawable/ic_menu_home"
+                        leaf:entry_text="GitHub"
+                        leaf:entry_description="Fork the repo and push changes or submit new issues."
+                        leaf:entry_link="https://github.com/maxterjy/remake/tree/master/leafpic">
+                    </remake.leafpic.view.AboutProjectEntry>
+
+                    <!--<ImageView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:src="@android:drawable/ic_dialog_map"/>-->
+
+                    <remake.leafpic.view.AboutProjectEntry
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        leaf:entry_icon="@android:drawable/ic_menu_myplaces"
+                        leaf:entry_text="License"
+                        leaf:entry_description="Check the GPLv3 license terms used on LeafPic."
+                        leaf:entry_link="https://github.com/HoraApps/LeafPic/blob/master/LICENSE">
+                    </remake.leafpic.view.AboutProjectEntry>
+
+                    <remake.leafpic.view.AboutProjectEntry
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        leaf:entry_icon="@android:drawable/ic_dialog_map"
+                        leaf:entry_text="Reference"
+                        leaf:entry_description="Thanks HoraApp for your amazing project."
+                        leaf:entry_link="https://github.com/HoraApps/LeafPic">
+                    </remake.leafpic.view.AboutProjectEntry>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <!--Development Info End-->
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

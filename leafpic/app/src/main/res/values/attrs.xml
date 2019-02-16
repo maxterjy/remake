@@ -3,5 +3,7 @@
     <declare-styleable name="leaf">
         <attr name="entry_icon" format="reference"/>
         <attr name="entry_text" format="string"/>
+        <attr name="entry_description" format="string"/>
+        <attr name="entry_link" format="string" />
     </declare-styleable>
 </resources>

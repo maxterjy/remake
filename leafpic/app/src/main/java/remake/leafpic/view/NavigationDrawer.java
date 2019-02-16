@@ -6,6 +6,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -38,7 +39,11 @@ public class NavigationDrawer extends ScrollView {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+
     private void init(Context context) {
+//        setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        setLayoutParams(new ScrollView.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+
         View v = LayoutInflater.from(context).inflate(R.layout.view_navigation_drawer, this, true);
 
         LinearLayout body = v.findViewById(R.id.navigation_view_body);
