@@ -3,7 +3,11 @@ package remake.leafpic.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.support.annotation.Nullable;
+import android.support.customtabs.CustomTabsIntent;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -49,8 +53,14 @@ public class AboutProjectEntry extends FrameLayout {
         mTitleTv.setText(title);
         mDescriptionTv.setText(description);
 
-        //todo
-        //onSelectListener
-        //direct to mLink
+        v.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomTabsIntent intent = new CustomTabsIntent.Builder().build();
+                intent.launchUrl(getContext(), Uri.parse(mLink));
+            }
+        });
     }
+
+
 }
