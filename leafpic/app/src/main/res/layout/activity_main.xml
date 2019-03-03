@@ -5,8 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawer_layout"
-    tools:context=".activity.MainActivity">
+    android:id="@+id/main_activity"
+    tools:context=".activity.MainActivity"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
     <android.support.design.widget.CoordinatorLayout
@@ -17,7 +18,15 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar"/>
+            layout="@layout/toolbar" />
+
+        <FrameLayout
+            android:id="@+id/content"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 
@@ -26,6 +35,7 @@
         android:id="@+id/home_navigation_drawer"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="@android:color/white"
         android:layout_gravity="start">
     </remake.leafpic.view.NavigationDrawer>
 

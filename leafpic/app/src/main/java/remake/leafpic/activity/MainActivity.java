@@ -1,6 +1,8 @@
 package remake.leafpic.activity;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import remake.leafpic.R;
+import remake.leafpic.fragment.AlbumFragment;
 import remake.leafpic.view.NavigationDrawer;
 import remake.leafpic.view.NavigationEntry;
 
@@ -27,6 +30,14 @@ public class MainActivity extends AppCompatActivity {
 
         setupToolbar();
         setupNavigation();
+
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+
+        AlbumFragment albumFragment = new AlbumFragment();
+        transaction.replace(R.id.content, albumFragment);
+        transaction.commit();
     }
 
     private void setupToolbar() {
@@ -36,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupNavigation() {
         navigationDrawerView = findViewById(R.id.home_navigation_drawer);
-        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.main_activity);
         mLeftNavigationMenu = findViewById(R.id.home_navigation_drawer);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close);
