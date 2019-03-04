@@ -1,6 +1,7 @@
 package remake.leafpic.activity;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +13,7 @@ import android.util.Log;
 
 import remake.leafpic.R;
 import remake.leafpic.fragment.AlbumFragment;
+import remake.leafpic.fragment.MediaFragment;
 import remake.leafpic.view.NavigationDrawer;
 import remake.leafpic.view.NavigationEntry;
 
@@ -35,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
 
-        AlbumFragment albumFragment = new AlbumFragment();
-        transaction.replace(R.id.content, albumFragment);
+        Fragment fragment = new MediaFragment();
+        transaction.replace(R.id.content, fragment);
         transaction.commit();
     }
 
