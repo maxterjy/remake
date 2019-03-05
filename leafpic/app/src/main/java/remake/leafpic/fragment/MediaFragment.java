@@ -3,6 +3,7 @@ package remake.leafpic.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,7 +30,7 @@ public class MediaFragment extends Fragment {
 
         mRvAllMedia = view.findViewById(R.id.rv_all_media);
 
-        RecyclerView.LayoutManager layoutMgr = new LinearLayoutManager(this.getContext());
+        RecyclerView.LayoutManager layoutMgr = new GridLayoutManager(this.getContext(), 3);
         mRvAllMedia.setLayoutManager(layoutMgr);
 
         MediaAdapter adapter = new MediaAdapter();
