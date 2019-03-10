@@ -6,6 +6,7 @@
     android:layout_margin="2dp">
 
     <ImageView
+        android:id="@+id/photo"
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:src="@drawable/zhou_dongyu"

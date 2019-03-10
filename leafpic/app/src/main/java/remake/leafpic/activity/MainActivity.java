@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import remake.leafpic.R;
+import remake.leafpic.data.MediaHelper;
 import remake.leafpic.fragment.AlbumFragment;
 import remake.leafpic.fragment.MediaFragment;
 import remake.leafpic.view.NavigationDrawer;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initSingletonInstance();
+
         setupToolbar();
         setupNavigation();
 
@@ -40,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragment = new MediaFragment();
         transaction.replace(R.id.content, fragment);
         transaction.commit();
+
+
+    }
+
+    private void initSingletonInstance() {
+        MediaHelper.getInstance().init(this.getApplicationContext());
     }
 
     private void setupToolbar() {
