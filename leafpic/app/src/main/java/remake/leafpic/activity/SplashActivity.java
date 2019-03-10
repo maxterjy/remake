@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import remake.leafpic.R;
+import remake.leafpic.schedule.InitializeMediaTask;
 import remake.leafpic.util.PermissionUtil;
 
 public class SplashActivity extends AppCompatActivity {
@@ -40,19 +41,22 @@ public class SplashActivity extends AppCompatActivity {
             PermissionUtil.requestPermission(this, STORAGE_PERMISSION_REQUEST_CODE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
         else {
-            startMainActivity();
+            start();
         }
     }
 
-    private void startMainActivity() {
-        mHandler.postDelayed(new Runnable() {
+    private void start() {
+        InitializeMediaTask.OnPostExecuteCallback postCallback = new InitializeMediaTask.OnPostExecuteCallback() {
             @Override
-            public void run() {
+            public void onPostExecute() {
                 Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
-        }, 1000);
+        };
+
+        InitializeMediaTask task = new InitializeMediaTask(postCallback);
+        task.execute(this, null, null);
     }
 
     @Override
@@ -69,7 +73,7 @@ public class SplashActivity extends AppCompatActivity {
                 }
                 else {
                     mTvMsg.setText("");
-                    startMainActivity();
+                    start();
                 }
                 
                 break;

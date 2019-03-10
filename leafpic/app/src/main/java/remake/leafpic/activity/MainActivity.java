@@ -31,11 +31,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initSingletonInstance();
-
         setupToolbar();
         setupNavigation();
-
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -45,10 +42,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
 
 
-    }
-
-    private void initSingletonInstance() {
-        MediaHelper.getInstance().init(this.getApplicationContext());
     }
 
     private void setupToolbar() {
