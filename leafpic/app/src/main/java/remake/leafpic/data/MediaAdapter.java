@@ -43,9 +43,15 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int index) {
         String path = MediaHelper.getInstance().getImagePathAt(index);
         if (path != null) {
-            File file = new File(path);
-            BitmapLoaderTask bitmapLoader = new BitmapLoaderTask(holder.mPhoto);
-            bitmapLoader.execute(file);
+            Bitmap bitmap = MediaHelper.getInstance().getBitmapFromCache(path);
+            if (bitmap != null) {
+                holder.mPhoto.setImageBitmap(bitmap);
+            }
+            else {
+                File file = new File(path);
+                BitmapLoaderTask bitmapLoader = new BitmapLoaderTask(holder.mPhoto);
+                bitmapLoader.execute(file);
+            }
         }
     }
 
