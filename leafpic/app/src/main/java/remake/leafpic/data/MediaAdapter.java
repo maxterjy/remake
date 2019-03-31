@@ -16,9 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+
 import java.io.File;
 
 import remake.leafpic.R;
+import remake.leafpic.schedule.BitmapLoaderTask;
 
 public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> {
     ImageView mPhoto;
@@ -42,10 +44,8 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
         String path = MediaHelper.getInstance().getImagePathAt(index);
         if (path != null) {
             File file = new File(path);
-            if (file.exists()) {
-                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                holder.mPhoto.setImageBitmap(bitmap);
-            }
+            BitmapLoaderTask bitmapLoader = new BitmapLoaderTask(holder.mPhoto);
+            bitmapLoader.execute(file);
         }
     }
 

@@ -3,6 +3,7 @@ package remake.leafpic.schedule;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import remake.leafpic.data.MediaHelper;
 

@@ -21,7 +21,6 @@ public class SplashActivity extends AppCompatActivity {
     private final int STORAGE_PERMISSION_REQUEST_CODE = 12;
 
     TextView mTvMsg;
-    Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +33,6 @@ public class SplashActivity extends AppCompatActivity {
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         mTvMsg = findViewById(R.id.textview_msg);
-        mHandler = new Handler();
 
         if (!PermissionUtil.isPermissionGranted(this, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             mTvMsg.setText("Permission to access storage was denied!\n We\'re not able to get your images!");
