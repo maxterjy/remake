@@ -13,6 +13,7 @@ import remake.leafpic.data.MediaHelper;
 public class BitmapLoaderTask extends AsyncTask<File, Void, Bitmap> {
 
     WeakReference<ImageView> imgViewRef;
+    File mImageFile;
 
     public BitmapLoaderTask(ImageView imgView) {
         imgViewRef = new WeakReference<>(imgView);
@@ -21,6 +22,8 @@ public class BitmapLoaderTask extends AsyncTask<File, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(File... files) {
         File file = files[0];
+        mImageFile = file;
+
         String path = file.getAbsolutePath();
         Bitmap bitmap = decodeBitmapFromFile(file);
 
@@ -51,5 +54,9 @@ public class BitmapLoaderTask extends AsyncTask<File, Void, Bitmap> {
         Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
 
         return  bitmap;
+    }
+
+    public File getImageFile() {
+        return mImageFile;
     }
 }

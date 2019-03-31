@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
@@ -21,9 +22,11 @@ import java.io.File;
 
 import remake.leafpic.R;
 import remake.leafpic.schedule.BitmapLoaderTask;
+import remake.leafpic.util.AsyncDrawable;
 
 public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> {
     ImageView mPhoto;
+    Bitmap placeHolderBitmap;
 
     @NonNull
     @Override
@@ -48,9 +51,16 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
                 holder.mPhoto.setImageBitmap(bitmap);
             }
             else {
-                File file = new File(path);
+                File requireFile = new File(path);
+
+                if (shouldStartNewBitmapLoaderTask(requireFile, holder.mPhoto)) {
+                    BitmapLoaderTask task = new BitmapLoaderTask(holder.mPhoto);
+                    AsyncDrawable drawable = new AsyncDrawable(holder.mPhoto.getResources(), placeHolderBitmap, task);
+                    holder.mPhoto.setImageDrawable(drawable);
+                    task.execute(requireFile);
+                }
                 BitmapLoaderTask bitmapLoader = new BitmapLoaderTask(holder.mPhoto);
-                bitmapLoader.execute(file);
+                bitmapLoader.execute(requireFile);
             }
         }
     }
@@ -70,5 +80,39 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
         public void init(ImageView photo) {
             mPhoto = photo;
         }
+    }
+
+    //if the file is current loading into imageview
+    //and the file it need to display are different
+    //cancel current task in image view, and the start a new task to load new file later
+    //otherwise, if they are the same, keep going
+    boolean shouldStartNewBitmapLoaderTask(File requireFile, ImageView imageView) {
+        BitmapLoaderTask task = getBitmapLoaderTaskFrom(imageView);
+
+        if (task != null) {
+            File loadingFile = task.getImageFile();
+            if (loadingFile != null) {
+
+                if (loadingFile != requireFile) {
+                    task.cancel(true);
+                }
+                else {
+                    //loadingFile and requestToLoadFile are the same
+                    //keep current loading work
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    BitmapLoaderTask getBitmapLoaderTaskFrom(ImageView imageView) {
+        Drawable drawable = imageView.getDrawable();
+        if (drawable instanceof AsyncDrawable) {
+            return ((AsyncDrawable) drawable).getBitmapLoaderTask();
+        }
+
+        return null;
     }
 }
