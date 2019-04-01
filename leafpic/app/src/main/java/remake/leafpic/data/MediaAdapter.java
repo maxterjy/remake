@@ -1,17 +1,11 @@
 package remake.leafpic.data;
 
-import android.content.ContentResolver;
-import android.database.Cursor;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +15,7 @@ import android.widget.ImageView;
 import java.io.File;
 
 import remake.leafpic.R;
+import remake.leafpic.activity.PhotoViewerActivity;
 import remake.leafpic.schedule.BitmapLoaderTask;
 import remake.leafpic.util.AsyncDrawable;
 
@@ -43,10 +38,10 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int index) {
-        String path = MediaHelper.getInstance().getImagePathAt(index);
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int index) {
+        String path = MediaManager.getInstance().getImagePathAt(index);
         if (path != null) {
-            Bitmap bitmap = MediaHelper.getInstance().getBitmapFromCache(path);
+            Bitmap bitmap = MediaManager.getInstance().getBitmapFromCache(path);
             if (bitmap != null) {
                 holder.mPhoto.setImageBitmap(bitmap);
             }
@@ -59,15 +54,23 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
                     holder.mPhoto.setImageDrawable(drawable);
                     task.execute(requireFile);
                 }
-                BitmapLoaderTask bitmapLoader = new BitmapLoaderTask(holder.mPhoto);
-                bitmapLoader.execute(requireFile);
             }
         }
+
+        holder.mPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), PhotoViewerActivity.class);
+                intent.putExtra("image_index", index);
+
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return MediaHelper.getInstance().getImageCount();
+        return MediaManager.getInstance().getImageCount();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

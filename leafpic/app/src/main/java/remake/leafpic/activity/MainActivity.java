@@ -9,14 +9,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import remake.leafpic.R;
-import remake.leafpic.data.MediaHelper;
-import remake.leafpic.fragment.AlbumFragment;
 import remake.leafpic.fragment.MediaFragment;
 import remake.leafpic.view.NavigationDrawer;
-import remake.leafpic.view.NavigationEntry;
 
 public class MainActivity extends AppCompatActivity {
 

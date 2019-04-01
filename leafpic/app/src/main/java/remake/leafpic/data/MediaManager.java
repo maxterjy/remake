@@ -9,19 +9,22 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.util.LruCache;
 
+import java.io.File;
 import java.util.ArrayList;
 
-public class MediaHelper {
-    private static final MediaHelper mInstance = new MediaHelper();
+import remake.leafpic.schedule.BitmapLoaderTask;
+
+public class MediaManager {
+    private static final MediaManager mInstance = new MediaManager();
 
     private ArrayList<String> mImagePaths;
     LruCache<String, Bitmap> mBitmapCache;
 
-    public static MediaHelper getInstance() {
+    public static MediaManager getInstance() {
         return mInstance;
     }
 
-    private MediaHelper() {
+    private MediaManager() {
     }
 
     public void init(Context context) {
@@ -61,14 +64,14 @@ public class MediaHelper {
         mBitmapCache.put(path, bitmap);
     }
 
-    String getImagePathAt(int index) {
+    public String getImagePathAt(int index) {
         if (index >= getImageCount())
             return null;
 
         return mImagePaths.get(index);
     }
 
-    int getImageCount() {
+   int getImageCount() {
         return mImagePaths.size();
     }
 }

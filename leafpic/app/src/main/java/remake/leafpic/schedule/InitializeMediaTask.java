@@ -1,11 +1,9 @@
 package remake.leafpic.schedule;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import remake.leafpic.data.MediaHelper;
+import remake.leafpic.data.MediaManager;
 
 public class InitializeMediaTask extends AsyncTask<Context, Void, Void> {
     OnPostExecuteCallback mPostCallback;
@@ -17,7 +15,7 @@ public class InitializeMediaTask extends AsyncTask<Context, Void, Void> {
     @Override
     protected Void doInBackground(Context... params) {
         Context context = params[0];
-        MediaHelper.getInstance().init(context);
+        MediaManager.getInstance().init(context);
 
         return null;
     }

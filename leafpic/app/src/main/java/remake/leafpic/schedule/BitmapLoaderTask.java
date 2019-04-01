@@ -8,15 +8,19 @@ import android.widget.ImageView;
 import java.io.File;
 import java.lang.ref.WeakReference;
 
-import remake.leafpic.data.MediaHelper;
+import remake.leafpic.data.MediaManager;
 
 public class BitmapLoaderTask extends AsyncTask<File, Void, Bitmap> {
 
     WeakReference<ImageView> imgViewRef;
-    File mImageFile;
+    File mImageFile = null;
 
     public BitmapLoaderTask(ImageView imgView) {
         imgViewRef = new WeakReference<>(imgView);
+    }
+
+    public BitmapLoaderTask() {
+
     }
 
     @Override
@@ -27,8 +31,8 @@ public class BitmapLoaderTask extends AsyncTask<File, Void, Bitmap> {
         String path = file.getAbsolutePath();
         Bitmap bitmap = decodeBitmapFromFile(file);
 
-        if (MediaHelper.getInstance().getBitmapFromCache(path) == null) {
-            MediaHelper.getInstance().putBitmapToCache(path, bitmap);
+        if (MediaManager.getInstance().getBitmapFromCache(path) == null) {
+            MediaManager.getInstance().putBitmapToCache(path, bitmap);
         }
 
         return bitmap;
