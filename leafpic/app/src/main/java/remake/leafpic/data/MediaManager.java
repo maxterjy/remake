@@ -1,13 +1,17 @@
 package remake.leafpic.data;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.LruCache;
+import android.view.Display;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -73,5 +77,19 @@ public class MediaManager {
 
    int getImageCount() {
         return mImagePaths.size();
+    }
+
+    public Bitmap decodeBitmapFromFile(File file, int targetWidth) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+        int imageWidth = options.outWidth;
+        int ratio = imageWidth / targetWidth;
+
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = ratio;
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+
+        return  bitmap;
     }
 }

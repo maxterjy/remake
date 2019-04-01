@@ -14,6 +14,7 @@ public class BitmapLoaderTask extends AsyncTask<File, Void, Bitmap> {
 
     WeakReference<ImageView> imgViewRef;
     File mImageFile = null;
+    int mTargetViewWidth = 180;
 
     public BitmapLoaderTask(ImageView imgView) {
         imgViewRef = new WeakReference<>(imgView);
@@ -23,15 +24,21 @@ public class BitmapLoaderTask extends AsyncTask<File, Void, Bitmap> {
 
     }
 
+    public void setTargetViewWidth(int w) {
+        mTargetViewWidth = w;
+    }
+
     @Override
     protected Bitmap doInBackground(File... files) {
         File file = files[0];
         mImageFile = file;
 
         String path = file.getAbsolutePath();
-        Bitmap bitmap = decodeBitmapFromFile(file);
 
-        if (MediaManager.getInstance().getBitmapFromCache(path) == null) {
+        Bitmap bitmap = MediaManager.getInstance().getBitmapFromCache(path);
+
+        if (bitmap == null) {
+            bitmap = MediaManager.getInstance().decodeBitmapFromFile(file, mTargetViewWidth);
             MediaManager.getInstance().putBitmapToCache(path, bitmap);
         }
 
@@ -44,20 +51,6 @@ public class BitmapLoaderTask extends AsyncTask<File, Void, Bitmap> {
             ImageView view = imgViewRef.get();
             view.setImageBitmap(bitmap);
         }
-    }
-
-    Bitmap decodeBitmapFromFile(File file) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-        int imageWidth = options.outWidth;
-        int ratio = imageWidth / 180; //hardcode: 180 is size of imageview
-
-        options.inJustDecodeBounds = false;
-        options.inSampleSize = ratio;
-        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-
-        return  bitmap;
     }
 
     public File getImageFile() {

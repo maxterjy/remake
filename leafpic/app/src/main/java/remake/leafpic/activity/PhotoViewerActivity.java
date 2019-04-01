@@ -3,6 +3,8 @@ package remake.leafpic.activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -16,11 +18,14 @@ import java.io.File;
 
 import remake.leafpic.R;
 import remake.leafpic.data.MediaManager;
+import remake.leafpic.data.SlideShowPagerAdapter;
 
 public class PhotoViewerActivity extends AppCompatActivity {
 
     Toolbar mToolbar;
     ImageView mImgViewPhoto;
+    ViewPager vpSlideShow;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,34 +42,18 @@ public class PhotoViewerActivity extends AppCompatActivity {
             }
         });
 
-        mImgViewPhoto = findViewById(R.id.image_view_photo);
+        vpSlideShow = findViewById(R.id.viewpager_slideshow);
+        PagerAdapter adapter = new SlideShowPagerAdapter(this);
+        vpSlideShow.setAdapter(adapter);
 
-        int image_index = getIntent().getIntExtra("image_index", -1);
-
-        String path = MediaManager.getInstance().getImagePathAt(image_index);
-        File file = new File(path);
-        Bitmap bitmap = decodeBitmapFromFile(file);
-
-        mImgViewPhoto.setImageBitmap(bitmap);
-    }
-
-    Bitmap decodeBitmapFromFile(File file) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-        int imageWidth = options.outWidth;
-
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int screenWidth = size.x;
-
-        int ratio = imageWidth / screenWidth; //hardcode: 180 is size of imageview
-
-        options.inJustDecodeBounds = false;
-        options.inSampleSize = ratio;
-        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-
-        return  bitmap;
+//        mImgViewPhoto = findViewById(R.id.image_view_photo);
+//
+//        int image_index = getIntent().getIntExtra("image_index", -1);
+//
+//        String path = MediaManager.getInstance().getImagePathAt(image_index);
+//        File file = new File(path);
+//        Bitmap bitmap = decodeBitmapFromFile(file);
+//
+//        mImgViewPhoto.setImageBitmap(bitmap);
     }
 }

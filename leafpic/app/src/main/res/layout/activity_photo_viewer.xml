@@ -5,16 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@android:color/background_dark"
     tools:context=".activity.PhotoViewerActivity">
 
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"/>
 
-    <ImageView
-        android:id="@+id/image_view_photo"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_slideshow"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/zhou_dongyu"/>
+        android:layout_height="match_parent">
+    </android.support.v4.view.ViewPager>
 
 </LinearLayout>
