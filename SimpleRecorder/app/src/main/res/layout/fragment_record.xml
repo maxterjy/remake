@@ -1,21 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".RecordFragment">
 
-    <Button
-        android:id="@+id/btnStart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="start" />
+    <ProgressBar
+        android:id="@+id/recordProgressBar"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="27dp"
+        android:layout_centerHorizontal="true"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressDrawable="@drawable/record_progress_bar"/>
 
-    <Button
-        android:id="@+id/btnStop"
-        android:layout_width="match_parent"
+    <Chronometer
+        android:id="@+id/recordChronometer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="stop" />
+        android:layout_alignBottom="@id/recordProgressBar"
+        android:layout_marginBottom="64dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="60sp"
+        android:fontFamily="sans-serif-light"/>
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="start" />
+
+        <Button
+            android:id="@+id/btnStop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="stop" />
+    </LinearLayout>
+
+</RelativeLayout>

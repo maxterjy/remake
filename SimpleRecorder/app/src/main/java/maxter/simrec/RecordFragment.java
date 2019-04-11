@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -28,6 +30,8 @@ public class RecordFragment extends Fragment {
     final String REQUIRE_PERMISSIONS[] = {Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     Button btnStart, btnStop;
+    Chronometer mChronometer = null;
+
 
     public RecordFragment() {
     }
@@ -39,14 +43,12 @@ public class RecordFragment extends Fragment {
 
         btnStart = outputView.findViewById(R.id.btnStart);
         btnStop = outputView.findViewById(R.id.btnStop);
-
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startRecording();
             }
         });
-
         btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,10 +56,15 @@ public class RecordFragment extends Fragment {
             }
         });
 
+        mChronometer = outputView.findViewById(R.id.recordChronometer);
+
         return outputView;
     }
 
     void startRecordingService(){
+        mChronometer.setBase(SystemClock.elapsedRealtime());
+        mChronometer.start();
+
         Toast.makeText(getActivity(), "Start Recording", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(), RecordingService.class);
         getActivity().startService(intent);
@@ -70,11 +77,12 @@ public class RecordFragment extends Fragment {
         else {
             requestNeededPermissions();
         }
-
     }
 
     public void stopRecording() {
         Toast.makeText(getActivity(), "Stop Recording", Toast.LENGTH_SHORT).show();
+        mChronometer.stop();
+
         Intent intent = new Intent(getActivity(), RecordingService.class);
         getActivity().stopService(intent);
     }
