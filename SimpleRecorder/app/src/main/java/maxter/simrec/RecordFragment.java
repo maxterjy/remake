@@ -9,6 +9,9 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -29,9 +32,10 @@ public class RecordFragment extends Fragment {
     final int REQUEST_PERMISSION_TO_RECORD = 1;
     final String REQUIRE_PERMISSIONS[] = {Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-    Button btnStart, btnStop;
     Chronometer mChronometer = null;
-
+    FloatingActionButton mFabRecord = null;
+    boolean mIsRecording = false;
+    CoordinatorLayout mCoordinatorLayout = null;
 
     public RecordFragment() {
     }
@@ -41,37 +45,41 @@ public class RecordFragment extends Fragment {
                              Bundle savedInstanceState) {
         View outputView = inflater.inflate(R.layout.fragment_record, container, false);
 
-        btnStart = outputView.findViewById(R.id.btnStart);
-        btnStop = outputView.findViewById(R.id.btnStop);
-        btnStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startRecording();
-            }
-        });
-        btnStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopRecording();
-            }
-        });
-
         mChronometer = outputView.findViewById(R.id.recordChronometer);
+        mCoordinatorLayout = outputView.findViewById(R.id.coordinatorLayout);
+        mFabRecord = outputView.findViewById(R.id.fabRecord);
+        mFabRecord.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                onFabRecordClick();
+            }
+        });
 
         return outputView;
+    }
+
+    private void onFabRecordClick() {
+        mIsRecording = !mIsRecording;
+
+        if (mIsRecording) {
+            startRecording();
+        }
+        else {
+            stopRecording();
+        }
     }
 
     void startRecordingService(){
         mChronometer.setBase(SystemClock.elapsedRealtime());
         mChronometer.start();
 
-        Toast.makeText(getActivity(), "Start Recording", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(), RecordingService.class);
         getActivity().startService(intent);
     }
 
     public void startRecording() {
         if (isPermissionGranted()) {
+            mFabRecord.setImageResource(R.drawable.ic_media_stop);
             startRecordingService();
         }
         else {
@@ -80,8 +88,9 @@ public class RecordFragment extends Fragment {
     }
 
     public void stopRecording() {
-        Toast.makeText(getActivity(), "Stop Recording", Toast.LENGTH_SHORT).show();
         mChronometer.stop();
+        mFabRecord.setImageResource(R.drawable.ic_mic_white_36dp);
+        Snackbar.make(mCoordinatorLayout, "Record Saved", Snackbar.LENGTH_SHORT).show();
 
         Intent intent = new Intent(getActivity(), RecordingService.class);
         getActivity().stopService(intent);
