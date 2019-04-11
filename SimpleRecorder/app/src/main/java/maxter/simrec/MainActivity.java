@@ -12,14 +12,4 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-
-    public void startRecording(View view) {
-        Intent intent = new Intent(this, RecordingService.class);
-        startService(intent);
-    }
-
-    public void stopRecording(View view) {
-        Intent intent = new Intent(this, RecordingService.class);
-        stopService(intent);
-    }
 }
