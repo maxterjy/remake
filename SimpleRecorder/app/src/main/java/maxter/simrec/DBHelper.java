@@ -2,6 +2,7 @@ package maxter.simrec;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -30,6 +31,14 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.i("DBHelper", "onUpgrade");
+    }
+
+    public int getRecordCount() {
+        SQLiteDatabase db = getReadableDatabase();
+        String projection[] = {"_id"};
+        Cursor cursor = db.query("saved_recording_tb", projection, null, null, null, null, null);
+        int count = cursor.getCount();
+        return count;
     }
 
     public long addRecording(String name, String path, long length) {

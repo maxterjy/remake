@@ -59,6 +59,16 @@ public class RecordingService extends Service {
             dir.mkdir();
 
         mOutputName =  "record.mp4";
+
+        try {
+            int n = mDBHelper.getRecordCount()+1;
+            String index = String.format("%03d", n);
+            mOutputName = "record_" + index + ".mp4";
+        }
+        catch (Exception ex) {
+            Log.i("RecordingService", "calculateOutputPath failed: " + ex.getMessage());
+        }
+
         mOutputPath =  dirPath + mOutputName;
     }
 
