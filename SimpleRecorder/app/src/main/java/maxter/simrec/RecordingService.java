@@ -13,6 +13,10 @@ import java.io.IOException;
 public class RecordingService extends Service {
 
     MediaRecorder mRecorder = null;
+    DBHelper mDBHelper = null;
+
+    String mOutputPath = null;
+    String mOutputName = null;
 
     public RecordingService() {
     }
@@ -27,6 +31,7 @@ public class RecordingService extends Service {
     public void onCreate() {
         Log.i("RecordingService", "onCreate");
         super.onCreate();
+        mDBHelper = new DBHelper(getApplicationContext());
     }
 
     @Override
@@ -46,15 +51,15 @@ public class RecordingService extends Service {
         }
     }
 
-    String getOutputPath() {
+    void calculateOutputPath() {
         String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SimpleRecorder/";
 
         File dir = new File(dirPath);
         if (!dir.exists())
             dir.mkdir();
 
-        String path =  dirPath + "record.mp4";
-        return path;
+        mOutputName =  "record.mp4";
+        mOutputPath =  dirPath + mOutputName;
     }
 
     public void startRecording() {
@@ -65,8 +70,8 @@ public class RecordingService extends Service {
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         mRecorder.setAudioChannels(1);
 
-        String path = getOutputPath();
-        mRecorder.setOutputFile(path);
+        calculateOutputPath();
+        mRecorder.setOutputFile(mOutputPath);
 
         try {
             mRecorder.prepare();
@@ -77,9 +82,17 @@ public class RecordingService extends Service {
     }
 
     public void stopRecording() {
-        Log.i("RecordingService", "stopRecording");
+        Log.i("RecordingService", "stopRecording output: " + mOutputPath);
 
         mRecorder.stop();
+        mRecorder.release();
         mRecorder = null;
+
+        try {
+            mDBHelper.addRecording(mOutputName, mOutputPath, 1000);
+        }
+        catch (Exception ex) {
+            Log.i("RecordingService", "stopRecording failed: " + ex.getMessage());
+        }
     }
 }
