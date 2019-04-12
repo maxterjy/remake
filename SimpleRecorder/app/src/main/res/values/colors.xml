@@ -2,9 +2,8 @@
 <resources>
     <color name="colorMain">@android:color/holo_green_dark</color>
 
-    <color name="colorPrimary">@color/colorMain</color>
+    <color name="colorPrimary">@android:color/holo_green_dark</color>
     <color name="colorPrimaryDark">#0f630a</color>
-    <color name="colorAccent">@color/colorMain</color>
-
+    <color name="colorAccent">#efff1c</color>
 
 </resources>

@@ -3,27 +3,38 @@ package maxter.simrec;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class FileViewerFragment extends Fragment {
 
+    RecyclerView mRecyclerView = null;
+    FileViewerAdapter mAdapter = null;
 
     public FileViewerFragment() {
-        // Required empty public constructor
+
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_file_viewer, container, false);
+        View outputView =  inflater.inflate(R.layout.fragment_file_viewer, container, false);
+        mRecyclerView = outputView.findViewById(R.id.recyclerView);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        mAdapter = new FileViewerAdapter();
+        mRecyclerView.setAdapter(mAdapter);
+
+        return outputView;
     }
 
 }
