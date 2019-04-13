@@ -14,6 +14,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.util.Log;
@@ -116,8 +117,10 @@ public class RecordFragment extends Fragment {
     public void stopRecording() {
         mChronometer.stop();
         mFabRecord.setImageResource(R.drawable.ic_mic_white_36dp);
-        Snackbar.make(mCoordinatorLayout, "Record Saved", Snackbar.LENGTH_SHORT).show();
-        
+
+        Snackbar snackBar = Snackbar.make(mCoordinatorLayout, "Record Saved", Snackbar.LENGTH_LONG);
+        snackBar.show();
+
         mTvStatus.clearAnimation();
         mTvStatus.startAnimation(mFadeAnim);
 

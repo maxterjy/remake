@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -53,6 +54,13 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
         holder.mTvName.setText(record.mName);
         holder.mTvLength.setText(Integer.toString(record.mLength));
         holder.mTvCreatedTime.setText(Long.toString(record.mCreatedTime));
+
+        holder.mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("RecordViewHolder", "mCardView OnClickListener");
+            }
+        });
     }
 
     @Override
@@ -67,15 +75,18 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
 //------------------------------------ViewHolder-------------------------------//
     public static class RecordViewHolder extends RecyclerView.ViewHolder {
 
+        public View mCardView;
         public TextView mTvName;
         public TextView mTvLength;
         public TextView mTvCreatedTime;
 
         public RecordViewHolder(@NonNull View itemView) {
             super(itemView);
+            mCardView = itemView.findViewById(R.id.cardView);
             mTvName = itemView.findViewById(R.id.tvName);
             mTvLength = itemView.findViewById(R.id.tvLength);
             mTvCreatedTime = itemView.findViewById(R.id.mTvCreatedTime);
+            mCardView = itemView.findViewById(R.id.cardView);
         }
     }
 }
