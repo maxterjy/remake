@@ -31,6 +31,18 @@
             android:layout_centerHorizontal="true"
             android:textSize="60sp"
             android:fontFamily="sans-serif-light"/>
+
+        <TextView
+            android:id="@+id/recordingStatusTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tap the button to start recording"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_below="@id/recordChronometer"
+            android:layout_marginTop="64dp"
+            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton

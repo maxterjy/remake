@@ -6,25 +6,25 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Chronometer;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class RecordFragment extends Fragment {
@@ -36,6 +36,9 @@ public class RecordFragment extends Fragment {
     FloatingActionButton mFabRecord = null;
     boolean mIsRecording = false;
     CoordinatorLayout mCoordinatorLayout = null;
+    TextView mTvStatus;
+    Animation mRotateAnim;
+    Animation mFadeAnim;
 
     public RecordFragment() {
     }
@@ -54,11 +57,39 @@ public class RecordFragment extends Fragment {
                 onFabRecordClick();
             }
         });
+        mTvStatus = outputView.findViewById(R.id.recordingStatusTv);
+
+        mRotateAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_rotate);
+
+        mFadeAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_fade_in);
+        final Animation fadeOutAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_fade_out);
+        mFadeAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mTvStatus.setText("Tap the button to start recording");
+                mTvStatus.startAnimation(fadeOutAnim);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
 
         return outputView;
     }
 
     private void onFabRecordClick() {
+        if (!isPermissionGranted()) {
+            requestNeededPermissions();
+            return;
+        }
+
         mIsRecording = !mIsRecording;
 
         if (mIsRecording) {
@@ -69,43 +100,41 @@ public class RecordFragment extends Fragment {
         }
     }
 
-    void startRecordingService(){
+    public void startRecording() {
+        mFabRecord.setImageResource(R.drawable.ic_media_stop);
         mChronometer.setBase(SystemClock.elapsedRealtime());
         mChronometer.start();
 
+        mTvStatus.setText("Recording...");
+        mTvStatus.clearAnimation();
+        mTvStatus.startAnimation(mRotateAnim);
+
         Intent intent = new Intent(getActivity(), RecordingService.class);
         getActivity().startService(intent);
-    }
-
-    public void startRecording() {
-        if (isPermissionGranted()) {
-            mFabRecord.setImageResource(R.drawable.ic_media_stop);
-            startRecordingService();
-        }
-        else {
-            requestNeededPermissions();
-        }
     }
 
     public void stopRecording() {
         mChronometer.stop();
         mFabRecord.setImageResource(R.drawable.ic_mic_white_36dp);
         Snackbar.make(mCoordinatorLayout, "Record Saved", Snackbar.LENGTH_SHORT).show();
+        
+        mTvStatus.clearAnimation();
+        mTvStatus.startAnimation(mFadeAnim);
+
+
 
         Intent intent = new Intent(getActivity(), RecordingService.class);
         getActivity().stopService(intent);
     }
 
     boolean isPermissionGranted() {
-        boolean isPermissionGranted = true;
         for(String permission: REQUIRE_PERMISSIONS) {
             if (ContextCompat.checkSelfPermission(getActivity(), permission) != PackageManager.PERMISSION_GRANTED) {
-                isPermissionGranted = false;
-                break;
+                return false;
             }
         }
 
-        return isPermissionGranted;
+        return true;
     }
 
     //ref: https://android--code.blogspot.com/2017/08/android-request-multiple-permissions.html
@@ -121,8 +150,15 @@ public class RecordFragment extends Fragment {
 
             if (shouldShowPermissionRational) { //show explanation of request permissions
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Please grant those permissions");
-                builder.setMessage("Microphone and Storage are required to do the tasks");
+                builder.setTitle("Permission Require");
+
+                if (Build.VERSION.SDK_INT >= 24) {
+                    builder.setMessage(Html.fromHtml("<b>Microphone</b> and <b>Storage</b><br/>are required to do the tasks", 0));
+                }
+                else {
+                    builder.setMessage(Html.fromHtml("<b>Microphone</b> and <b>Storage</b><br/>are required to do the tasks"));
+                }
+
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -137,29 +173,13 @@ public class RecordFragment extends Fragment {
                 requestPermissions(REQUIRE_PERMISSIONS, REQUEST_PERMISSION_TO_RECORD);
             }
         }
-        else { //do something when permission are granted
-            Toast.makeText(getActivity(), "Permission granted", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.i("RecordFragment", "requestCode: " + requestCode);
-        boolean isPermissionGranted = true;
         if (requestCode == REQUEST_PERMISSION_TO_RECORD) {
-            for(int i = 0; i < permissions.length; i++) {
-                Log.i("RecordFragment", "permission: " + permissions[i] + " : " + grantResults[i]);
-                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                    isPermissionGranted = false;
-                    break;
-                }
-            }
-
-            if (isPermissionGranted) {
-                startRecordingService();
-            }
-            else {
-                Toast.makeText(getActivity(), "Please enable permissions", Toast.LENGTH_SHORT).show();
+            if (!isPermissionGranted()) {
+                Toast.makeText(getActivity(), "Permissions are denied", Toast.LENGTH_SHORT).show();
             }
         }
     }
