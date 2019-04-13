@@ -31,7 +31,7 @@ public class RecordingService extends Service {
     public void onCreate() {
         Log.i("RecordingService", "onCreate");
         super.onCreate();
-        mDBHelper = new DBHelper(getApplicationContext());
+        mDBHelper = DBHelper.getInstance();
     }
 
     @Override

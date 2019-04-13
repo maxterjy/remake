@@ -17,7 +17,16 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
     DBHelper mDBHelper;
 
     public FileViewerAdapter(Context context) {
-        mDBHelper = new DBHelper(context);
+        mDBHelper = DBHelper.getInstance();
+
+        Log.i("FileViewerAdapter", "ctor");
+        mDBHelper.setOnDatabaseChangedListener(new DBHelper.OnDatabaseChangedListener() {
+            @Override
+            public void onNewEntryAdded() {
+                Log.i("FileViewerAdapter", "onNewEntryAdded");
+                notifyItemInserted(getItemCount()-1);
+            }
+        });
     }
 
     @NonNull

@@ -26,6 +26,12 @@ public class MainActivity extends AppCompatActivity {
 
         mTabLayout = findViewById(R.id.tabLayout);
         mTabLayout.setupWithViewPager(mViewPager);
+
+        initSingletonInstances();
+    }
+
+    private void initSingletonInstances() {
+        DBHelper.initInstance(this);
     }
 
 

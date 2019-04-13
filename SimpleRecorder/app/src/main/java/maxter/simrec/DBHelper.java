@@ -14,12 +14,27 @@ public class DBHelper extends SQLiteOpenHelper {
     //column: _id, name, path, length, created_time
 
     Context mContext;
+    OnDatabaseChangedListener mOnDatabaseListener = null;
 
-    public DBHelper(Context context) {
+    //make DBHelper singleton
+    static DBHelper mInstance = null;
+
+    private DBHelper(Context context) {
         super(context, "saved_recordings.db", null, 1);
         Log.i("DBHelper", "ctor");
         mContext = context;
     }
+
+    public static void initInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new DBHelper(context);
+        }
+    }
+
+    public static DBHelper getInstance() {
+        return mInstance;
+    }
+    //make DBHelper singleton end
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -47,14 +62,15 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.i("DBHelper", "addRecording " + name + " ," + path + " ," + length);
 
         SQLiteDatabase db = getWritableDatabase();
-
         ContentValues value = new ContentValues();
         value.put("name", name);
         value.put("path", path);
         value.put("length", length);
         value.put("created_time", System.currentTimeMillis());
-
         long rowId = db.insert("saved_recording_tb", null, value);
+
+        if (mOnDatabaseListener != null)
+            mOnDatabaseListener.onNewEntryAdded();
 
         return rowId;
     }
@@ -77,5 +93,13 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return null;
+    }
+
+    public interface OnDatabaseChangedListener {
+        void onNewEntryAdded();
+    }
+
+    public void setOnDatabaseChangedListener(OnDatabaseChangedListener listener) {
+        mOnDatabaseListener = listener;
     }
 }
