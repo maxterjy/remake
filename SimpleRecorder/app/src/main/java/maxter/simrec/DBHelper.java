@@ -38,6 +38,8 @@ public class DBHelper extends SQLiteOpenHelper {
         String projection[] = {"_id"};
         Cursor cursor = db.query("saved_recording_tb", projection, null, null, null, null, null);
         int count = cursor.getCount();
+        Log.i("DBHelper", "getRecordCount " + count);
+
         return count;
     }
 
@@ -55,5 +57,25 @@ public class DBHelper extends SQLiteOpenHelper {
         long rowId = db.insert("saved_recording_tb", null, value);
 
         return rowId;
+    }
+
+    public RecordInfo getRecordInfoAt(int index) {
+        SQLiteDatabase db = getReadableDatabase();
+        String projection[] = {"_id", "name", "path", "length", "created_time"};
+        Cursor cursor = db.query("saved_recording_tb", projection, null, null, null, null, null);
+
+        if (cursor.moveToPosition(index)) {
+            RecordInfo record = new RecordInfo();
+            record.mId = cursor.getInt(cursor.getColumnIndex("_id"));
+            record.mName = cursor.getString(cursor.getColumnIndex("name"));
+            record.mPath = cursor.getString(cursor.getColumnIndex("path"));
+            record.mLength = cursor.getInt(cursor.getColumnIndex("length"));
+            record.mCreatedTime = cursor.getLong(cursor.getColumnIndex("created_time"));
+
+            cursor.close();
+            return record;
+        }
+
+        return null;
     }
 }

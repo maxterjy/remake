@@ -24,6 +24,7 @@
             android:paddingLeft="4dp">
 
             <TextView
+                android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Record 01"
@@ -32,6 +33,7 @@
                 android:fontFamily="sans-serif-condensed"/>
 
             <TextView
+                android:id="@+id/tvLength"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="02:45"
@@ -40,6 +42,7 @@
                 android:fontFamily="sans-serif-condensed"/>
 
             <TextView
+                android:id="@+id/mTvCreatedTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="12.04.2019 - 17:14"

@@ -31,7 +31,7 @@ public class FileViewerFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new FileViewerAdapter();
+        mAdapter = new FileViewerAdapter(getActivity());
         mRecyclerView.setAdapter(mAdapter);
 
         return outputView;
