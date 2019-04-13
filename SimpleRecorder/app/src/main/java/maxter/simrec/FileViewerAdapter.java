@@ -2,6 +2,7 @@ package maxter.simrec;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,16 +16,19 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
 
 
     DBHelper mDBHelper;
+    LinearLayoutManager mLayoutManager;
 
-    public FileViewerAdapter(Context context) {
+    public FileViewerAdapter(Context context, LinearLayoutManager layoutManager) {
         mDBHelper = DBHelper.getInstance();
+        mLayoutManager = layoutManager;
 
         Log.i("FileViewerAdapter", "ctor");
         mDBHelper.setOnDatabaseChangedListener(new DBHelper.OnDatabaseChangedListener() {
             @Override
             public void onNewEntryAdded() {
                 Log.i("FileViewerAdapter", "onNewEntryAdded");
-                notifyItemInserted(getItemCount()-1);
+                notifyItemInserted(0);
+                mLayoutManager.scrollToPosition(0);
             }
         });
     }
@@ -42,7 +46,10 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
     public void onBindViewHolder(@NonNull RecordViewHolder holder, int index) {
         Log.i("FileViewerAdapter", "onBindViewHolder: " + index);
 
-        RecordInfo record = getRecordInfoAt(index);
+        int count = mDBHelper.getRecordCount();
+        int revertIndex = count - index - 1;
+
+        RecordInfo record = getRecordInfoAt(revertIndex);
         holder.mTvName.setText(record.mName);
         holder.mTvLength.setText(Integer.toString(record.mLength));
         holder.mTvCreatedTime.setText(Long.toString(record.mCreatedTime));
