@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="PlayBackDialogTheme">
+        <!--<item name="android:windowEnterAnimation">@anim/anim_zoom_out</item>-->
+        <item name="android:windowExitAnimation">@anim/anim_zoom_in</item>
+    </style>
+
 </resources>
