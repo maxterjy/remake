@@ -81,6 +81,7 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
         return mDBHelper.getRecordInfoAt(index);
     }
 
+
 //------------------------------------ViewHolder-------------------------------//
     public static class RecordViewHolder extends RecyclerView.ViewHolder {
 
