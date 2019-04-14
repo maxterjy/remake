@@ -119,12 +119,18 @@ public class RecordFragment extends Fragment {
         mFabRecord.setImageResource(R.drawable.ic_mic_white_36dp);
 
         Snackbar snackBar = Snackbar.make(mCoordinatorLayout, "Record Saved", Snackbar.LENGTH_LONG);
+        snackBar.setAction("Open", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlaybackFragment fragment = new PlaybackFragment();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragment.show(transaction, "dialog_playback");
+            }
+        });
         snackBar.show();
 
         mTvStatus.clearAnimation();
         mTvStatus.startAnimation(mFadeAnim);
-
-
 
         Intent intent = new Intent(getActivity(), RecordingService.class);
         getActivity().stopService(intent);
