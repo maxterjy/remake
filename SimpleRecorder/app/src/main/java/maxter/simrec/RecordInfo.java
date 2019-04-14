@@ -6,4 +6,15 @@ public class RecordInfo {
     public String mPath;
     public int mLength;
     public long mCreatedTime;
+
+    public RecordInfo(String name, String path, int length, long createdTime) {
+        mName = name;
+        mPath = path;
+        mLength = length;
+        mCreatedTime = createdTime;
+    }
+
+    public RecordInfo() {
+
+    }
 }

@@ -7,22 +7,31 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 
 public class DBHelper extends SQLiteOpenHelper {
     //database: saved_recordings.db
     //table: saved_recording_tb
     //column: _id, name, path, length, created_time
 
+    //make DBHelper singleton
+    static DBHelper mInstance = null;
+
     Context mContext;
     OnDatabaseChangedListener mOnDatabaseListener = null;
 
-    //make DBHelper singleton
-    static DBHelper mInstance = null;
+    //cache records info
+    ArrayList<RecordInfo> mRecords = null;
+    final int NOT_INIT_RECORD_COUNT = -1;
+    int mRecordCount = NOT_INIT_RECORD_COUNT;
 
     private DBHelper(Context context) {
         super(context, "saved_recordings.db", null, 1);
         Log.i("DBHelper", "ctor");
         mContext = context;
+
+        mRecords = new ArrayList<RecordInfo>();
     }
 
     public static void initInstance(Context context) {
@@ -49,18 +58,20 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public int getRecordCount() {
-        SQLiteDatabase db = getReadableDatabase();
-        String projection[] = {"_id"};
-        Cursor cursor = db.query("saved_recording_tb", projection, null, null, null, null, null);
-        int count = cursor.getCount();
-        Log.i("DBHelper", "getRecordCount " + count);
+        if (mRecordCount == NOT_INIT_RECORD_COUNT) {
+            SQLiteDatabase db = getReadableDatabase();
+            String projection[] = {"_id"};
+            Cursor cursor = db.query("saved_recording_tb", projection, null, null, null, null, null);
+            mRecordCount = cursor.getCount();
+        }
 
-        return count;
+        return mRecordCount;
     }
 
-    public long addRecording(String name, String path, long length) {
+    public long addRecording(String name, String path, int length) {
         Log.i("DBHelper", "addRecording " + name + " ," + path + " ," + length);
 
+        //Add to database
         SQLiteDatabase db = getWritableDatabase();
         ContentValues value = new ContentValues();
         value.put("name", name);
@@ -69,6 +80,10 @@ public class DBHelper extends SQLiteOpenHelper {
         value.put("created_time", System.currentTimeMillis());
         long rowId = db.insert("saved_recording_tb", null, value);
 
+        //Add to cache
+        mRecords.add(new RecordInfo(name, path, length, System.currentTimeMillis()));
+        mRecordCount++;
+
         if (mOnDatabaseListener != null)
             mOnDatabaseListener.onNewEntryAdded();
 
@@ -76,20 +91,32 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public RecordInfo getRecordInfoAt(int index) {
-        SQLiteDatabase db = getReadableDatabase();
-        String projection[] = {"_id", "name", "path", "length", "created_time"};
-        Cursor cursor = db.query("saved_recording_tb", projection, null, null, null, null, null);
-
-        if (cursor.moveToPosition(index)) {
-            RecordInfo record = new RecordInfo();
-            record.mId = cursor.getInt(cursor.getColumnIndex("_id"));
-            record.mName = cursor.getString(cursor.getColumnIndex("name"));
-            record.mPath = cursor.getString(cursor.getColumnIndex("path"));
-            record.mLength = cursor.getInt(cursor.getColumnIndex("length"));
-            record.mCreatedTime = cursor.getLong(cursor.getColumnIndex("created_time"));
-
-            cursor.close();
+        try {
+            //find record from cache first
+            RecordInfo record = mRecords.get(index);
             return record;
+
+        } catch (Exception ex) {
+            //if not found in cache, find in database
+            SQLiteDatabase db = getReadableDatabase();
+            String projection[] = {"_id", "name", "path", "length", "created_time"};
+            Cursor cursor = db.query("saved_recording_tb", projection, null, null, null, null, null);
+
+            if (cursor.moveToPosition(index)) {
+                RecordInfo record = new RecordInfo();
+                record.mId = cursor.getInt(cursor.getColumnIndex("_id"));
+                record.mName = cursor.getString(cursor.getColumnIndex("name"));
+                record.mPath = cursor.getString(cursor.getColumnIndex("path"));
+                record.mLength = cursor.getInt(cursor.getColumnIndex("length"));
+                record.mCreatedTime = cursor.getLong(cursor.getColumnIndex("created_time"));
+
+                cursor.close();
+
+                //add record to cache
+                mRecords.add(record);
+
+                return record;
+           }
         }
 
         return null;
