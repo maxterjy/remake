@@ -17,8 +17,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class PlaybackFragment extends DialogFragment {
 
@@ -30,22 +32,28 @@ public class PlaybackFragment extends DialogFragment {
 //For handling SeekBar
     SeekBar mSeekBar = null;
     Handler mHandler = new Handler();
-    Runnable mSeekBarUpdater = new Runnable() {
+    Runnable mUiUpdater = new Runnable() {
         @Override
         public void run() {
             if (mMediaPlayer != null) {
                 int progress = mMediaPlayer.getCurrentPosition();
-                mSeekBar.setProgress(progress);
+                updateUI(progress);
 
-                postUpdateSeekBar();
+                postUpdateUiRunnable();
             }
         }
     };
 
-    void postUpdateSeekBar() {
-        mHandler.postDelayed(mSeekBarUpdater, 1000);
+    void postUpdateUiRunnable() {
+        mHandler.postDelayed(mUiUpdater, 1000);
     }
 //For handling SeekBar end
+
+
+//For time info
+    TextView mTvCurrentTime;
+    TextView mTvAudioLength;
+//For time info end
 
     //TODO: open correct record
     RecordInfo mRecord = null;
@@ -97,32 +105,43 @@ public class PlaybackFragment extends DialogFragment {
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                Log.i("PlaybackFragment", "onProgressChanged: " + progress);
+                if (fromUser) {
+                    updateUI(progress);
+                }
 
                 if (mMediaPlayer != null && fromUser) {
-                    mHandler.removeCallbacks(mSeekBarUpdater);
-                    mMediaPlayer.seekTo(progress);
+                    mHandler.removeCallbacks(mUiUpdater);
 
-                    postUpdateSeekBar();
+                    postUpdateUiRunnable();
                 }
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                Log.i("PlaybackFragment", "onStartTrackingTouch: " + seekBar.getProgress());
+
                 if (mMediaPlayer != null) {
-                    mHandler.removeCallbacks(mSeekBarUpdater);
+                    mHandler.removeCallbacks(mUiUpdater);
                 }
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                Log.i("PlaybackFragment", "onStopTrackingTouch: " + seekBar.getProgress());
+
                 if (mMediaPlayer != null) {
-                    mHandler.removeCallbacks(mSeekBarUpdater);
+                    mHandler.removeCallbacks(mUiUpdater);
                     mMediaPlayer.seekTo(seekBar.getProgress());
 
-                    postUpdateSeekBar();
+                    postUpdateUiRunnable();
                 }
             }
         });
+
+
+        mTvCurrentTime = view.findViewById(R.id.tvCurrentTime);
+        mTvAudioLength = view.findViewById(R.id.tvAudioLength);
 
 
         Dialog dialog = builder.create();
@@ -166,7 +185,7 @@ public class PlaybackFragment extends DialogFragment {
                 public void onPrepared(MediaPlayer mp) {
                     mSeekBar.setProgress(0);
                     mMediaPlayer.start();
-                    postUpdateSeekBar();
+                    postUpdateUiRunnable();
                 }
             });
         }
@@ -181,7 +200,7 @@ public class PlaybackFragment extends DialogFragment {
 
         mMediaPlayer.pause();
 
-        mHandler.removeCallbacks(mSeekBarUpdater);
+        mHandler.removeCallbacks(mUiUpdater);
     }
 
     void stopAudio() {
@@ -194,7 +213,7 @@ public class PlaybackFragment extends DialogFragment {
         mMediaPlayer = null;
 
         mSeekBar.setProgress(mSeekBar.getMax());
-        mHandler.removeCallbacks(mSeekBarUpdater);
+        mHandler.removeCallbacks(mUiUpdater);
     }
 
     @Override
@@ -220,5 +239,17 @@ public class PlaybackFragment extends DialogFragment {
         if (mMediaPlayer != null) {
             stopAudio();
         }
+    }
+
+    void updateUI(int progress) {
+        mSeekBar.setProgress(progress);
+
+        //current time
+        long minute = TimeUnit.MILLISECONDS.toMinutes(progress);
+        long second = TimeUnit.MILLISECONDS.toSeconds(progress) - TimeUnit.MILLISECONDS.toSeconds(minute);
+        Log.i("PlaybackFragment", "updateUI: " + minute + " : " + second);
+
+        mTvCurrentTime.setText(String.format("%02d:%02d", minute, second));
+        //current time end
     }
 }
