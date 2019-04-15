@@ -21,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 
 public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.RecordViewHolder> {
 
-
     Context mContext;
     DBHelper mDBHelper;
     LinearLayoutManager mLayoutManager;
@@ -31,11 +30,9 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
         mDBHelper = DBHelper.getInstance();
         mLayoutManager = layoutManager;
 
-        Log.i("FileViewerAdapter", "ctor");
         mDBHelper.setOnDatabaseChangedListener(new DBHelper.OnDatabaseChangedListener() {
             @Override
             public void onNewEntryAdded() {
-                Log.i("FileViewerAdapter", "onNewEntryAdded");
                 notifyItemInserted(0);
                 mLayoutManager.scrollToPosition(0);
             }

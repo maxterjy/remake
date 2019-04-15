@@ -107,7 +107,6 @@ public class PlaybackFragment extends DialogFragment {
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Log.i("PlaybackFragment", "onProgressChanged: " + progress);
                 if (fromUser) {
                     updateUI(progress);
                 }
@@ -121,8 +120,6 @@ public class PlaybackFragment extends DialogFragment {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                Log.i("PlaybackFragment", "onStartTrackingTouch: " + seekBar.getProgress());
-
                 if (mMediaPlayer != null) {
                     mHandler.removeCallbacks(mUiUpdater);
                 }
@@ -130,8 +127,6 @@ public class PlaybackFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Log.i("PlaybackFragment", "onStopTrackingTouch: " + seekBar.getProgress());
-
                 if (mMediaPlayer != null) {
                     mHandler.removeCallbacks(mUiUpdater);
                     mMediaPlayer.seekTo(seekBar.getProgress());
@@ -256,7 +251,6 @@ public class PlaybackFragment extends DialogFragment {
         //current time
         long minute = TimeUnit.MILLISECONDS.toMinutes(progress);
         long second = TimeUnit.MILLISECONDS.toSeconds(progress) % 60; //- TimeUnit.MILLISECONDS.toSeconds(minute);
-        Log.i("PlaybackFragment", "updateUI: " + minute + " : " + second);
 
         mTvCurrentTime.setText(String.format("%02d:%02d", minute, second));
         //current time end

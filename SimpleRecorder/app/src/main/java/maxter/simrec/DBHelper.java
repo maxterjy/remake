@@ -28,7 +28,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private DBHelper(Context context) {
         super(context, "saved_recordings.db", null, 1);
-        Log.i("DBHelper", "ctor");
         mContext = context;
 
         mRecords = new ArrayList<RecordInfo>();
@@ -47,14 +46,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i("DBHelper", "onCreate");
         String command = "create table saved_recording_tb(_id integer primary key, name text, path text, length integer, created_time integer)";
         db.execSQL(command);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.i("DBHelper", "onUpgrade");
     }
 
     public int getRecordCount() {
@@ -68,9 +65,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return mRecordCount;
     }
 
-    public long addRecording(String name, String path, long length) {
-        Log.i("DBHelper", "addRecording " + name + " ," + path + " ," + length);
-
+    public long addRecording(String name, String path, long length) {\
         //Add to database
         SQLiteDatabase db = getWritableDatabase();
         ContentValues value = new ContentValues();
