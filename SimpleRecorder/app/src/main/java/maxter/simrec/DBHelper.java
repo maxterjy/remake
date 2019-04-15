@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -76,7 +78,7 @@ public class DBHelper extends SQLiteOpenHelper {
         long rowId = db.insert("saved_recording_tb", null, value);
 
         //Add to cache
-        mRecords.add(0, new RecordInfo(name, path, length, System.currentTimeMillis()));
+        mRecords.add(new RecordInfo(name, path, length, System.currentTimeMillis()));
         mRecordCount++;
 
         if (mOnDatabaseListener != null)
@@ -95,7 +97,7 @@ public class DBHelper extends SQLiteOpenHelper {
             //if not found in cache, find in database
             SQLiteDatabase db = getReadableDatabase();
             String projection[] = {"_id", "name", "path", "length", "created_time"};
-            Cursor cursor = db.query("saved_recording_tb", projection, null, null, null, null, "_id desc");
+            Cursor cursor = db.query("saved_recording_tb", projection, null, null, null, null, null);
 
             if (cursor.moveToPosition(index)) {
                 RecordInfo record = new RecordInfo();
@@ -108,13 +110,28 @@ public class DBHelper extends SQLiteOpenHelper {
                 cursor.close();
 
                 //add record to cache
-                mRecords.add(0, record);
+                mRecords.add(record);
 
                 return record;
            }
         }
 
         return null;
+    }
+
+    public void removeRecordAt(int index) {
+        RecordInfo record = mRecords.get(index);
+        int id = record.mId;
+
+        //remove from db
+        SQLiteDatabase db = getReadableDatabase();
+        String[] whereArgs = {String.valueOf(id)};
+        db.delete("saved_recording_tb", "_id=?", whereArgs);
+
+        //remove from cache
+        mRecords.remove(index);
+
+        mRecordCount--;
     }
 
     public interface OnDatabaseChangedListener {

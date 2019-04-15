@@ -1,6 +1,5 @@
 package maxter.simrec;
 
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.media.MediaPlayer;

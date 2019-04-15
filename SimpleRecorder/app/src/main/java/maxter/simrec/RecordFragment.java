@@ -72,7 +72,13 @@ public class RecordFragment extends Fragment {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mTvStatus.setText("Tap the button to start recording");
+                if (mIsRecording) {
+                    mTvStatus.setText("Recording...");
+                }
+                else {
+                    mTvStatus.setText("Tap the button to start recording");
+                }
+
                 mTvStatus.startAnimation(fadeOutAnim);
             }
 
@@ -106,9 +112,9 @@ public class RecordFragment extends Fragment {
         mChronometer.setBase(SystemClock.elapsedRealtime());
         mChronometer.start();
 
-        mTvStatus.setText("Recording...");
+        //mTvStatus.setText("Recording...");
         mTvStatus.clearAnimation();
-        mTvStatus.startAnimation(mRotateAnim);
+        mTvStatus.startAnimation(mFadeAnim);
 
         Intent intent = new Intent(getActivity(), RecordingService.class);
         getActivity().startService(intent);

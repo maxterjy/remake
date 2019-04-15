@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,10 @@ public class FileViewerFragment extends Fragment {
 
         mAdapter = new FileViewerAdapter(getActivity(), layoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        SwipeToDeleteCallback swipeToDelete = new SwipeToDeleteCallback(getActivity(), mAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(swipeToDelete);
+        touchHelper.attachToRecyclerView(mRecyclerView);
 
         return outputView;
     }
