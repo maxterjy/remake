@@ -156,6 +156,19 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
     }
 
     void renameRecordAt(int index, String targetName) {
+        boolean isValidName = false;
+        for(int j = 0; j < targetName.length(); j++) {
+            if (Character.isLetterOrDigit(targetName.charAt(j))) {
+                isValidName = true;
+                break;
+            }
+        }
+
+        if (!isValidName){
+            Toast.makeText(mContext, "Please choose a valid name.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SimpleRecorder/";
         String targetPath = dirPath + targetName + ".mp4";
         File targetFile = new File(targetPath);
