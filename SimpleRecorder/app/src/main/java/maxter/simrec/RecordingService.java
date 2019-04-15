@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,18 +62,18 @@ public class RecordingService extends Service {
         if (!dir.exists())
             dir.mkdir();
 
-        mOutputName =  "record.mp4";
+        mOutputName =  "record";
 
         try {
             int n = mDBHelper.getRecordCount()+1;
             String index = String.format("%02d", n);
-            mOutputName = "Record " + index + ".mp4";
+            mOutputName = "Record " + index;
         }
         catch (Exception ex) {
             Log.i("RecordingService", "calculateOutputPath failed: " + ex.getMessage());
         }
 
-        mOutputPath =  dirPath + mOutputName;
+        mOutputPath =  dirPath + mOutputName + ".mp4";
     }
 
     public void startRecording() {
@@ -97,8 +98,6 @@ public class RecordingService extends Service {
     }
 
     public void stopRecording() {
-        Log.i("RecordingService", "stopRecording output: " + mOutputPath);
-
         mRecorder.stop();
         mRecorder.release();
         mRecorder = null;
@@ -107,6 +106,7 @@ public class RecordingService extends Service {
 
         try {
             mDBHelper.addRecording(mOutputName, mOutputPath, recLength);
+            Toast.makeText(this, "Saved to " + mOutputName, Toast.LENGTH_SHORT).show();
         }
         catch (Exception ex) {
             Log.i("RecordingService", "stopRecording failed: " + ex.getMessage());

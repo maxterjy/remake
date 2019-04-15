@@ -129,7 +129,7 @@ public class RecordFragment extends Fragment {
 //        });
 //        snackBar.show();
 
-        Toast.makeText(getActivity(), "Record saved", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), "Record saved", Toast.LENGTH_SHORT).show();
 
         mTvStatus.clearAnimation();
         mTvStatus.startAnimation(mFadeAnim);

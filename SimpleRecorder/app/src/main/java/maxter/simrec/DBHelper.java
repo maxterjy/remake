@@ -81,7 +81,7 @@ public class DBHelper extends SQLiteOpenHelper {
         long rowId = db.insert("saved_recording_tb", null, value);
 
         //Add to cache
-        mRecords.add(new RecordInfo(name, path, length, System.currentTimeMillis()));
+        mRecords.add(0, new RecordInfo(name, path, length, System.currentTimeMillis()));
         mRecordCount++;
 
         if (mOnDatabaseListener != null)
@@ -100,7 +100,7 @@ public class DBHelper extends SQLiteOpenHelper {
             //if not found in cache, find in database
             SQLiteDatabase db = getReadableDatabase();
             String projection[] = {"_id", "name", "path", "length", "created_time"};
-            Cursor cursor = db.query("saved_recording_tb", projection, null, null, null, null, null);
+            Cursor cursor = db.query("saved_recording_tb", projection, null, null, null, null, "_id desc");
 
             if (cursor.moveToPosition(index)) {
                 RecordInfo record = new RecordInfo();
@@ -113,7 +113,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 cursor.close();
 
                 //add record to cache
-                mRecords.add(record);
+                mRecords.add(0, record);
 
                 return record;
            }

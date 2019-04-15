@@ -53,10 +53,7 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
 
     @Override
     public void onBindViewHolder(@NonNull RecordViewHolder holder, final int index) {
-        int count = mDBHelper.getRecordCount();
-        int revertIndex = count - index - 1;
-
-        RecordInfo record = getRecordInfoAt(revertIndex);
+        final RecordInfo record = getRecordInfoAt(index);
         holder.mTvName.setText(record.mName);
 
         long minute = TimeUnit.MILLISECONDS.toMinutes(record.mLength);
@@ -72,7 +69,6 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
             @Override
             public void onClick(View v) {
                 try {
-                    RecordInfo record = DBHelper.getInstance().getRecordInfoAt(index);
                     PlaybackFragment fragment = PlaybackFragment.newInstance(record);
                     FragmentTransaction transaction = ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction();
                     fragment.show(transaction, "dialog_playback");

@@ -54,7 +54,8 @@ public class PlaybackFragment extends DialogFragment {
     TextView mTvAudioName;
 
     RecordInfo mRecord = null;
-
+    long mAudioLengthMinute = 0;
+    long mAudioLengthSecond = 0;
 
     public static PlaybackFragment newInstance(RecordInfo record) {
         Bundle args = new Bundle();
@@ -102,6 +103,7 @@ public class PlaybackFragment extends DialogFragment {
         });
 
         mSeekBar = view.findViewById(R.id.seekbar);
+        mSeekBar.setMax((int)mRecord.mLength);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -144,6 +146,10 @@ public class PlaybackFragment extends DialogFragment {
         mTvCurrentTime = view.findViewById(R.id.tvCurrentTime);
         mTvAudioLength = view.findViewById(R.id.tvAudioLength);
 
+        mAudioLengthMinute = TimeUnit.MILLISECONDS.toMinutes(mRecord.mLength);
+        mAudioLengthSecond = TimeUnit.MILLISECONDS.toSeconds(mRecord.mLength) - TimeUnit.MINUTES.toSeconds(mAudioLengthMinute);
+        mTvAudioLength.setText(String.format("%02d:%02d", mAudioLengthMinute, mAudioLengthSecond));
+
         mTvAudioName.setText(mRecord.mName);
 
         Dialog dialog = builder.create();
@@ -169,7 +175,7 @@ public class PlaybackFragment extends DialogFragment {
         mMediaPlayer = new MediaPlayer();
 
         try{
-            String path = "/storage/emulated/0/SimpleRecorder/Record 01.mp4";
+            String path = mRecord.mPath;
             mMediaPlayer.setDataSource(path);
             mMediaPlayer.prepare();
 
@@ -208,6 +214,7 @@ public class PlaybackFragment extends DialogFragment {
     void stopAudio() {
         mIsPlaying = false;
         mFabPlay.setImageResource(R.drawable.ic_media_play);
+        mTvCurrentTime.setText(String.format("%02d:%02d", mAudioLengthMinute, mAudioLengthSecond));
 
         mMediaPlayer.stop();
         mMediaPlayer.reset();
@@ -248,7 +255,7 @@ public class PlaybackFragment extends DialogFragment {
 
         //current time
         long minute = TimeUnit.MILLISECONDS.toMinutes(progress);
-        long second = TimeUnit.MILLISECONDS.toSeconds(progress) - TimeUnit.MILLISECONDS.toSeconds(minute);
+        long second = TimeUnit.MILLISECONDS.toSeconds(progress) % 60; //- TimeUnit.MILLISECONDS.toSeconds(minute);
         Log.i("PlaybackFragment", "updateUI: " + minute + " : " + second);
 
         mTvCurrentTime.setText(String.format("%02d:%02d", minute, second));
