@@ -2,30 +2,25 @@ package maxter.simrec;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethod;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.Date;
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.RecordViewHolder> {
@@ -88,7 +83,7 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
         holder.mCardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                final CharSequence[] items = {"Rename", "Delete"};
+                final CharSequence[] items = {"Rename", "Share"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setTitle("Options");
                 builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -96,10 +91,7 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0://rename
-                                break;
-
-                            case 1://delete
-                                removeRecordAt(holder.getAdapterPosition());
+                                showRenameDialog(holder.getAdapterPosition());
                                 break;
                         }
                     }
@@ -120,6 +112,40 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
         });
     }
 
+    private void showRenameDialog(final int index) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.rename_dialog_layout, null);
+        final EditText edtRename = view.findViewById(R.id.edtRename);
+        builder.setTitle("Rename");
+        builder.setCancelable(true);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String targetName = edtRename.getText().toString();
+                renameRecordAt(index, targetName);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.setView(view);
+
+        AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(edtRename, InputMethod.SHOW_EXPLICIT);
+            }
+        });
+
+        dialog.show();
+    }
+
     @Override
     public int getItemCount() {
         return mDBHelper.getRecordCount();
@@ -127,6 +153,22 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
 
     RecordInfo getRecordInfoAt(int index) {
         return mDBHelper.getRecordInfoAt(index);
+    }
+
+    void renameRecordAt(int index, String targetName) {
+        String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SimpleRecorder/";
+        String targetPath = dirPath + targetName + ".mp4";
+        File targetFile = new File(targetPath);
+
+        if (targetFile.exists() || targetFile.isDirectory()) {
+            Toast.makeText(mContext, "Please choose a different name. File already exists", Toast.LENGTH_LONG).show();
+        }
+        else {
+            File srcFile = new File(getRecordInfoAt(index).mPath);
+            srcFile.renameTo(targetFile);
+            mDBHelper.renameRecordAt(index, targetName, targetPath);
+            notifyItemChanged(index);
+        }
     }
 
     void removeRecordAt(int index) {

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -132,6 +133,27 @@ public class DBHelper extends SQLiteOpenHelper {
         mRecords.remove(index);
 
         mRecordCount--;
+
+        //remove from file system
+        File file = new File(record.mPath);
+        file.delete();
+    }
+
+    public void renameRecordAt(int index, String targetName, String targetPath) {
+        RecordInfo record = getRecordInfoAt(index);
+        int id = record.mId;
+
+        //rename in database
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues targetValue = new ContentValues();
+        targetValue.put("name", targetName);
+        targetValue.put("path", targetPath);
+        String whereArgs = "_id=" + id;
+        db.update("saved_recording_tb", targetValue, whereArgs, null);
+
+        //rename in cache
+        mRecords.get(index).mName = targetName;
+        mRecords.get(index).mPath = targetPath;
     }
 
     public interface OnDatabaseChangedListener {

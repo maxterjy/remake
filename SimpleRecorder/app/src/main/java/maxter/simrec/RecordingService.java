@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -73,6 +72,7 @@ public class RecordingService extends Service {
             editor.commit();
         }
         catch (Exception ex) {
+            Log.i("RecordingService", "calculateOutputPath failed: " + ex.getMessage());
         }
 
         mOutputPath =  dirPath + mOutputName + ".mp4";
