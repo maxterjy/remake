@@ -79,7 +79,7 @@ public class DBHelper extends SQLiteOpenHelper {
         long rowId = db.insert("saved_recording_tb", null, value);
 
         //Add to cache
-        mRecords.add(new RecordInfo(name, path, length, System.currentTimeMillis()));
+        mRecords.add(new RecordInfo((int)rowId, name, path, length, System.currentTimeMillis()));
         mRecordCount++;
 
         if (mOnDatabaseListener != null)
@@ -103,6 +103,7 @@ public class DBHelper extends SQLiteOpenHelper {
             if (cursor.moveToPosition(index)) {
                 RecordInfo record = new RecordInfo();
                 record.mId = cursor.getInt(cursor.getColumnIndex("_id"));
+
                 record.mName = cursor.getString(cursor.getColumnIndex("name"));
                 record.mPath = cursor.getString(cursor.getColumnIndex("path"));
                 record.mLength = cursor.getInt(cursor.getColumnIndex("length"));
@@ -140,8 +141,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void renameRecordAt(int index, String targetName, String targetPath) {
-        RecordInfo record = getRecordInfoAt(index);
-        int id = record.mId;
+        int id = getRecordInfoAt(index).mId;
 
         //rename in database
         SQLiteDatabase db = getWritableDatabase();

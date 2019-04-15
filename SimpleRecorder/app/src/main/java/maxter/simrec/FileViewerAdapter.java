@@ -2,6 +2,8 @@ package maxter.simrec;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -93,6 +95,9 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
                             case 0://rename
                                 showRenameDialog(holder.getAdapterPosition());
                                 break;
+
+                            case 1://share
+                                shareFile(holder.getAdapterPosition());
                         }
                     }
                 });
@@ -110,6 +115,18 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
                 return true;
             }
         });
+    }
+
+    private void shareFile(int index) {
+        String path = getRecordInfoAt(index).mPath;
+        File file = new File(path);
+        Uri uri = Uri.fromFile(file);
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.setType("audio/mp4");
+        mContext.startActivity(intent.createChooser(intent, "Share to"));
     }
 
     private void showRenameDialog(final int index) {
@@ -179,6 +196,8 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
         else {
             File srcFile = new File(getRecordInfoAt(index).mPath);
             srcFile.renameTo(targetFile);
+
+
             mDBHelper.renameRecordAt(index, targetName, targetPath);
             notifyItemChanged(index);
         }
