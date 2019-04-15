@@ -159,7 +159,12 @@ public class PlaybackFragment extends DialogFragment {
             pauseAudio();
         }
         else {
-            playAudio();
+            if (mMediaPlayer == null) {
+                playAudio();
+            }
+            else {
+                resumeAudio();
+            }
         }
     }
 
@@ -195,6 +200,14 @@ public class PlaybackFragment extends DialogFragment {
         catch (IOException ex) {
             Log.i("PlaybackFragment", "playAudio failed: " + ex.getMessage());
         }
+    }
+
+    void resumeAudio() {
+        mIsPlaying = true;
+        mFabPlay.setImageResource(R.drawable.ic_media_pause);
+        mHandler.removeCallbacks(mUiUpdater);
+        mMediaPlayer.start();
+        postUpdateUiRunnable();
     }
 
     void pauseAudio() {

@@ -65,7 +65,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return mRecordCount;
     }
 
-    public long addRecording(String name, String path, long length) {\
+    public long addRecording(String name, String path, long length) {
         //Add to database
         SQLiteDatabase db = getWritableDatabase();
         ContentValues value = new ContentValues();
