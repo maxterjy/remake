@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
+
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.RecordViewHolder> {
 
@@ -54,8 +58,15 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
 
         RecordInfo record = getRecordInfoAt(revertIndex);
         holder.mTvName.setText(record.mName);
-        holder.mTvLength.setText(Integer.toString(record.mLength));
-        holder.mTvCreatedTime.setText(Long.toString(record.mCreatedTime));
+
+        long minute = TimeUnit.MILLISECONDS.toMinutes(record.mLength);
+        long second = TimeUnit.MILLISECONDS.toSeconds(record.mLength) - TimeUnit.MINUTES.toSeconds(minute);
+
+        holder.mTvLength.setText(String.format("%02d:%02d", minute, second));
+
+        String strCreatedTime = DateUtils.formatDateTime(mContext, record.mCreatedTime,
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_YEAR);
+        holder.mTvCreatedTime.setText(strCreatedTime);
 
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +100,7 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
         public View mCardView;
         public TextView mTvName;
         public TextView mTvLength;
+
         public TextView mTvCreatedTime;
 
         public RecordViewHolder(@NonNull View itemView) {

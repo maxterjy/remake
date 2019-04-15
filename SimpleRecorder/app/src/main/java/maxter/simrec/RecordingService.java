@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.util.Log;
 
 import java.io.File;
@@ -17,6 +18,8 @@ public class RecordingService extends Service {
 
     String mOutputPath = null;
     String mOutputName = null;
+
+    long mStartRecTime = 0;
 
     public RecordingService() {
     }
@@ -89,6 +92,8 @@ public class RecordingService extends Service {
         } catch (IOException ex){
             Log.e("RecordingService", "prepare failed: " + ex.getMessage());
         }
+
+        mStartRecTime = System.currentTimeMillis();
     }
 
     public void stopRecording() {
@@ -98,8 +103,10 @@ public class RecordingService extends Service {
         mRecorder.release();
         mRecorder = null;
 
+        final long recLength = System.currentTimeMillis() - mStartRecTime;
+
         try {
-            mDBHelper.addRecording(mOutputName, mOutputPath, 1000);
+            mDBHelper.addRecording(mOutputName, mOutputPath, recLength);
         }
         catch (Exception ex) {
             Log.i("RecordingService", "stopRecording failed: " + ex.getMessage());

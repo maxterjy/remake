@@ -7,10 +7,10 @@ public class RecordInfo implements Parcelable {
     public int mId;
     public String mName;
     public String mPath;
-    public int mLength;
+    public long mLength;
     public long mCreatedTime;
 
-    public RecordInfo(String name, String path, int length, long createdTime) {
+    public RecordInfo(String name, String path, long length, long createdTime) {
         mName = name;
         mPath = path;
         mLength = length;
@@ -51,7 +51,7 @@ public class RecordInfo implements Parcelable {
         dest.writeInt(mId);
         dest.writeString(mName);
         dest.writeString(mPath);
-        dest.writeInt(mLength);
+        dest.writeLong(mLength);
         dest.writeLong(mCreatedTime);
     }
 }
