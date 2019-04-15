@@ -27,7 +27,7 @@ public class PlaybackFragment extends DialogFragment {
     MediaPlayer mMediaPlayer = null;
     boolean mIsPlaying = false;
 
-    //For handling SeekBar
+//For handling SeekBar
     SeekBar mSeekBar = null;
     Handler mHandler = new Handler();
     Runnable mSeekBarUpdater = new Runnable() {
@@ -45,7 +45,20 @@ public class PlaybackFragment extends DialogFragment {
     void postUpdateSeekBar() {
         mHandler.postDelayed(mSeekBarUpdater, 1000);
     }
-    //For handling SeekBar end
+//For handling SeekBar end
+
+    //TODO: open correct record
+    RecordInfo mRecord = null;
+
+    public static PlaybackFragment newInstance(RecordInfo record) {
+        Bundle args = new Bundle();
+        
+        PlaybackFragment fragment = new PlaybackFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+    //TODO end
 
     public PlaybackFragment() {
 
@@ -81,6 +94,36 @@ public class PlaybackFragment extends DialogFragment {
         });
 
         mSeekBar = view.findViewById(R.id.seekbar);
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                if (mMediaPlayer != null && fromUser) {
+                    mHandler.removeCallbacks(mSeekBarUpdater);
+                    mMediaPlayer.seekTo(progress);
+
+                    postUpdateSeekBar();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                if (mMediaPlayer != null) {
+                    mHandler.removeCallbacks(mSeekBarUpdater);
+                }
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (mMediaPlayer != null) {
+                    mHandler.removeCallbacks(mSeekBarUpdater);
+                    mMediaPlayer.seekTo(seekBar.getProgress());
+
+                    postUpdateSeekBar();
+                }
+            }
+        });
+
 
         Dialog dialog = builder.create();
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
