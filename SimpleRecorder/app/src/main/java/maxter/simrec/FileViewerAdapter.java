@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -120,13 +121,13 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
     private void shareFile(int index) {
         String path = getRecordInfoAt(index).mPath;
         File file = new File(path);
-        Uri uri = Uri.fromFile(file);
+        Uri uri = FileProvider.getUriForFile(mContext, "maxter.simrec.FileProvider", file);
 
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         intent.setType("audio/mp4");
-        mContext.startActivity(intent.createChooser(intent, "Share to"));
+        mContext.startActivity(intent.createChooser(intent, "Send file"));
     }
 
     private void showRenameDialog(final int index) {
