@@ -2,6 +2,7 @@ package maxter.simrec;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.os.IBinder;
@@ -58,12 +59,18 @@ public class RecordingService extends Service {
         if (!dir.exists())
             dir.mkdir();
 
-        mOutputName =  "record";
+        mOutputName =  "Record";
 
         try {
-            int n = mDBHelper.getRecordCount()+1;
+            SharedPreferences pref = getSharedPreferences("simple_sound_pref", MODE_PRIVATE);
+            int n = pref.getInt("latest_record_index", 1);
+
             String index = String.format("%02d", n);
             mOutputName = "Record " + index;
+
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putInt("latest_record_index", n+1);
+            editor.commit();
         }
         catch (Exception ex) {
         }
