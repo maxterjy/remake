@@ -49,27 +49,27 @@ public class PlaybackFragment extends DialogFragment {
     }
 //For handling SeekBar end
 
-
-//For time info
     TextView mTvCurrentTime;
     TextView mTvAudioLength;
-//For time info end
+    TextView mTvAudioName;
 
-    //TODO: open correct record
     RecordInfo mRecord = null;
+
 
     public static PlaybackFragment newInstance(RecordInfo record) {
         Bundle args = new Bundle();
-        
+        args.putParcelable("record_info", record);
+
         PlaybackFragment fragment = new PlaybackFragment();
         fragment.setArguments(args);
 
         return fragment;
     }
-    //TODO end
 
-    public PlaybackFragment() {
-
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mRecord = getArguments().getParcelable("record_info");
     }
 
     @Override
@@ -140,9 +140,11 @@ public class PlaybackFragment extends DialogFragment {
         });
 
 
+        mTvAudioName = view.findViewById(R.id.tvAudioName);
         mTvCurrentTime = view.findViewById(R.id.tvCurrentTime);
         mTvAudioLength = view.findViewById(R.id.tvAudioLength);
 
+        mTvAudioName.setText(mRecord.mName);
 
         Dialog dialog = builder.create();
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);

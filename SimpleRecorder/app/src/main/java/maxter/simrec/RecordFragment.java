@@ -118,16 +118,18 @@ public class RecordFragment extends Fragment {
         mChronometer.stop();
         mFabRecord.setImageResource(R.drawable.ic_mic_white_36dp);
 
-        Snackbar snackBar = Snackbar.make(mCoordinatorLayout, "Record Saved", Snackbar.LENGTH_LONG);
-        snackBar.setAction("Open", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PlaybackFragment fragment = new PlaybackFragment();
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragment.show(transaction, "dialog_playback");
-            }
-        });
-        snackBar.show();
+//        Snackbar snackBar = Snackbar.make(mCoordinatorLayout, "Record Saved", Snackbar.LENGTH_LONG);
+//        snackBar.setAction("Open", new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                PlaybackFragment fragment = new PlaybackFragment();
+//                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                fragment.show(transaction, "dialog_playback");
+//            }
+//        });
+//        snackBar.show();
+
+        Toast.makeText(getActivity(), "Record saved", Toast.LENGTH_SHORT).show();
 
         mTvStatus.clearAnimation();
         mTvStatus.startAnimation(mFadeAnim);

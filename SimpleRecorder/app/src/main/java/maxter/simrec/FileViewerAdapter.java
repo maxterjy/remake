@@ -48,7 +48,7 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecordViewHolder holder, int index) {
+    public void onBindViewHolder(@NonNull RecordViewHolder holder, final int index) {
         int count = mDBHelper.getRecordCount();
         int revertIndex = count - index - 1;
 
@@ -61,7 +61,8 @@ public class FileViewerAdapter extends RecyclerView.Adapter<FileViewerAdapter.Re
             @Override
             public void onClick(View v) {
                 try {
-                    PlaybackFragment fragment = new PlaybackFragment();
+                    RecordInfo record = DBHelper.getInstance().getRecordInfoAt(index);
+                    PlaybackFragment fragment = PlaybackFragment.newInstance(record);
                     FragmentTransaction transaction = ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction();
                     fragment.show(transaction, "dialog_playback");
 
