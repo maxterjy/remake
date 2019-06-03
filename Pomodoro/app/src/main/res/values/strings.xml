@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Pomodoro</string>
+
+    <string name="intro_lyrics_01">Time is the valuable thing</string>
+    <string name="intro_lyrics_02">We live only once</string>
+    <string name="intro_lyrics_03">Now is a present</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
